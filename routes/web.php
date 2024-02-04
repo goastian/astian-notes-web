@@ -12,12 +12,12 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "web" middleware group. Make something great!
 |
-*/
+ */
 
 Route::get('/login', [CodeController::class, 'login'])->name('login');
 Route::get('/redirect', [CodeController::class, 'redirect'])->name('redirect');
 Route::get('/callback', [CodeController::class, 'callback'])->name('callback');
 
-Route::get('/', function () {
+Route::get("/{any}", function () {
     return view('welcome');
-});
+})->where('any', '.*')->middleware('server');

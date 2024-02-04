@@ -1,35 +1,21 @@
 <?php
 
 namespace App\Http\Controllers;
-  
-use Illuminate\Routing\Controller;
+
 use Elyerr\ApiResponse\Assets\Asset;
 use Elyerr\ApiResponse\Assets\JsonResponser;
+use Elyerr\Passport\Connect\Traits\Passport;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Routing\Controller;
 
 class GlobalController extends Controller
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, JsonResponser, Asset;
+    use AuthorizesRequests, Passport, DispatchesJobs, ValidatesRequests, JsonResponser, Asset;
 
     public function __construct()
     {
-        $this->middleware('auth');
-    }
-
-    public function AuthKey()
-    {
-        return request()->user()->id;
-    }
-
-    public function lowercase($value)
-    {
-        return strtolower($value);
-    }
-
-    public function uppercase($value)
-    {
-        return strtoupper($value);
+        $this->middleware('server');
     }
 }
