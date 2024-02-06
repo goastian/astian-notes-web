@@ -39,15 +39,15 @@ return [
     /**
      * scopes o permisos para que los usuarios puedan accceder a las caracteristicas del cliente
      */
-    'scopes' => env('CLIENT_SCOPES',''),
+    'scopes' => env('CLIENT_SCOPES', ''),
 
     /**
      * Variable donde se manejara las credenciales de los usuarios, estas variables
      * no es necesario cambiarlas, pero si lo haces todas deben tener un nombre distinto
      */
     'ids' => [
-        'jwt_token' => env('PASSPORT_TOKEN', Str::slug(env('APP_NAME', 'passport'), '_')) . '_outh2_server',
-        'jwt_refresh' => env('PASSPORT_REFRESH', Str::slug(env('APP_NAME', 'passport'), '_')) . '_refresh_outh2_server',
+        'jwt_token' => env('PASSPORT_TOKEN', Str::slug(env('APP_NAME', 'passport'), '_') . '_outh2_server'),
+        'jwt_refresh' => env('PASSPORT_REFRESH', Str::slug(env('APP_NAME', 'passport'), '_') . '_refresh_outh2_server'),
     ],
 
     /**
