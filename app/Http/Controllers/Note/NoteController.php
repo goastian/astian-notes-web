@@ -45,10 +45,9 @@ class NoteController extends Controller
      */
     public function store(Request $request, Note $note)
     {
-
         $this->validate($request, [
             'body' => ['max:500'],
-            'audio' => ['file', 'mimes:audio', 'mimetypes:audio/*', 'max:50000'],
+            'audio' => ['file', 'mimes:audio', 'mimetypes:audio/*', 'max:512000'],
         ]);
 
         throw_unless($request->body or $request->$note,
@@ -56,7 +55,8 @@ class NoteController extends Controller
 
         DB::transaction(function () use ($request, $note) {
             $note->body = Purify::clean($request->body);
-            $note->audio = $request->audio ? Storage::disk('notes')->put('', $request->audio) : null;
+            $note->audio = $request->audio ?
+            Storage::disk('notes')->put($this->user()->id, $request->audio) : null;
             $note->user_id = $this->user()->id;
             $note->save();
         });
@@ -94,7 +94,7 @@ class NoteController extends Controller
 
         $this->validate($request, [
             'body' => ['max:500'],
-            'audio' => ['file', 'mimes:audio', 'mimetypes:audio/*', 'max:50000'],
+            'audio' => ['file', 'mimes:audio', 'mimetypes:audio/*', 'max:512000'],
         ]);
 
         DB::transaction(function () use ($request, $note) {
@@ -107,7 +107,10 @@ class NoteController extends Controller
 
             if ($this->is_diferent($note->audio, $request->audio)) {
                 $updated = true;
-                $note->audio = Purify::clean($request->audio);
+                //Storage::disk('notes')->delete( $this->user()->id ."/".$request->banner);
+
+                $note->audio = $request->audio ?
+                Storage::disk('notes')->put($this->user()->id, $request->audio) : null;
             }
 
             if ($updated) {
