@@ -19,5 +19,5 @@ Route::get('/redirect', [CodeController::class, 'redirect'])->name('redirect');
 Route::get('/callback', [CodeController::class, 'callback'])->name('callback');
 
 Route::get("/{any}", function () {
-    return view('welcome');
+    return view('app');
 })->where('any', '.*')->middleware('server');
