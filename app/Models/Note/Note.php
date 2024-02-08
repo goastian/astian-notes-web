@@ -3,6 +3,7 @@
 namespace App\Models\Note;
 
 use App\Models\Master;
+use App\Models\Note\Tag;
 use App\Transformers\Note\NoteTransformer;
 
 class Note extends Master
@@ -16,6 +17,11 @@ class Note extends Master
     protected $fillable = [
         'text',
         'body',
+        'tag_id',
     ];
 
+    public function tag()
+    {
+        return $this->belongsTo(Tag::class);
+    }
 }

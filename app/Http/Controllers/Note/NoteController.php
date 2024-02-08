@@ -48,6 +48,7 @@ class NoteController extends Controller
         $this->validate($request, [
             'body' => ['max:500'],
             'audio' => ['file', 'mimes:audio', 'mimetypes:audio/*', 'max:512000'],
+            'tag_id' => ['exists:tags,id'],
         ]);
 
         throw_unless($request->body or $request->$note,
@@ -58,6 +59,7 @@ class NoteController extends Controller
             $note->audio = $request->audio ?
             Storage::disk('notes')->put($this->user()->id, $request->audio) : null;
             $note->user_id = $this->user()->id;
+            $note->tag_id = $request->tag_id;
             $note->save();
         });
 
@@ -95,6 +97,7 @@ class NoteController extends Controller
         $this->validate($request, [
             'body' => ['max:500'],
             'audio' => ['file', 'mimes:audio', 'mimetypes:audio/*', 'max:512000'],
+            'tag_id' => ['exist:tags,id'],
         ]);
 
         DB::transaction(function () use ($request, $note) {

@@ -4,7 +4,7 @@ namespace App\Transformers\Note;
 
 use League\Fractal\TransformerAbstract;
 
-class NoteTransformer extends TransformerAbstract
+class TagTransformer extends TransformerAbstract
 {
     /**
      * List of resources to automatically include
@@ -29,21 +29,22 @@ class NoteTransformer extends TransformerAbstract
      *
      * @return array
      */
-    public function transform($note)
+    /**
+     * A Fractal transformer.
+     *
+     * @return array
+     */
+    public function transform($tag)
     {
         return [
-            'id' => $note->id,
-            'cuerpo' => $note->body,
-            'audio' => $note->audio,
-            'categoria' => $note->tag_id,
-            'creado' => $note->created_at,
-            'actualizado' => $note->updated_at,
+            'id' => $tag->id,
+            'categoria' => $tag->name,
             'links' => [
-                'parent' => route('notes.index'),
-                'store' => route('notes.index'),
-                'show' => route('notes.index', ['note' => $note->id]),
-                'update' => route('notes.index', ['note' => $note->id]),
-                'destroy' => route('notes.index', ['note' => $note->id]),
+                'parent' => route('tags.index'),
+                'store' => route('tags.index'),
+                'show' => route('tags.index', ['tag' => $tag->id]),
+                'update' => route('tags.index', ['tag' => $tag->id]),
+                'destroy' => route('tags.index', ['tag' => $tag->id]),
             ],
         ];
     }
@@ -51,9 +52,7 @@ class NoteTransformer extends TransformerAbstract
     public static function transformRequest($index)
     {
         $attribute = [
-            'cuerpo' => 'body',
-            'audio' => 'audio',
-            'categoria' => 'tag_id',
+            'categoria' => 'name',
         ];
 
         return isset($attribute[$index]) ? $attribute[$index] : null;
@@ -62,9 +61,7 @@ class NoteTransformer extends TransformerAbstract
     public static function transformResponse($index)
     {
         $attribute = [
-            'body' => 'cuerpo',
-            'audio' => 'audio',
-            'tag_id' => 'categoria',
+            'name' => 'categoria',
         ];
 
         return isset($attribute[$index]) ? $attribute[$index] : null;
@@ -74,11 +71,7 @@ class NoteTransformer extends TransformerAbstract
     {
         $attributes = [
             'id' => 'id',
-            'cuerpo' => 'body',
-            'audio' => 'audio',
-            'categoria' => 'tag_id',
-            'creado' => 'created_at',
-            'updated_at' => 'updated_at',
+            'categoria' => 'name',
         ];
 
         return isset($attributes[$index]) ? $attributes[$index] : null;

@@ -13,13 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('notes', function (Blueprint $table) {
+        Schema::create('tags', function (Blueprint $table) {
             $table->uuid('id')->unique();
-            $table->text('body')->nullable();
-            $table->string('audio')->nullable();
-            $table->uuid('tag_id')->nullable();
+            $table->string('name', 100);
             $table->uuid('user_id');
-            $table->timestamps();
             $table->primary('id');
         });
     }
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('notes');
+        Schema::dropIfExists('tags');
     }
 };
