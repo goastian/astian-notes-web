@@ -46,7 +46,8 @@ class NoteController extends Controller
     public function store(Request $request, Note $note)
     {
         $this->validate($request, [
-            'body' => ['max:500'],
+            'title' => ['required', 'max:50'],
+            'body' => ['max:1000'],
             'audio' => ['file', 'mimes:audio', 'mimetypes:audio/*', 'max:512000'],
             'tag_id' => ['exists:tags,id'],
         ]);
@@ -55,6 +56,7 @@ class NoteController extends Controller
             new ReportError(Lang::get('Al menos un campo es requerido'), 422));
 
         DB::transaction(function () use ($request, $note) {
+            $note->title = $request->title;
             $note->body = Purify::clean($request->body);
             $note->audio = $request->audio ?
             Storage::disk('notes')->put($this->user()->id, $request->audio) : null;
@@ -95,13 +97,19 @@ class NoteController extends Controller
             new ReportError(Lang::get('Usuario no autorizado'), 403));
 
         $this->validate($request, [
-            'body' => ['max:500'],
+            'title' => ['max:50'],
+            'body' => ['max:1000'],
             'audio' => ['file', 'mimes:audio', 'mimetypes:audio/*', 'max:512000'],
             'tag_id' => ['exist:tags,id'],
         ]);
 
         DB::transaction(function () use ($request, $note) {
             $updated = false;
+
+            if ($this->is_diferent($note->title, $request->title)) {
+                $updated = true;
+                $note->title = Purify::clean($request->title);
+            }
 
             if ($this->is_diferent($note->body, $request->body)) {
                 $updated = true;

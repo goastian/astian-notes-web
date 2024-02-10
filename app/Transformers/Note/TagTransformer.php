@@ -38,13 +38,13 @@ class TagTransformer extends TransformerAbstract
     {
         return [
             'id' => $tag->id,
-            'categoria' => $tag->name,
+            'tag' => $tag->name,
             'links' => [
                 'parent' => route('tags.index'),
                 'store' => route('tags.index'),
-                'show' => route('tags.index', ['tag' => $tag->id]),
-                'update' => route('tags.index', ['tag' => $tag->id]),
-                'destroy' => route('tags.index', ['tag' => $tag->id]),
+                'show' => route('tags.show', ['tag' => $tag->id]),
+                'update' => route('tags.update', ['tag' => $tag->id]),
+                'destroy' => route('tags.destroy', ['tag' => $tag->id]),
             ],
         ];
     }
@@ -52,7 +52,7 @@ class TagTransformer extends TransformerAbstract
     public static function transformRequest($index)
     {
         $attribute = [
-            'categoria' => 'name',
+            'tag' => 'name',
         ];
 
         return isset($attribute[$index]) ? $attribute[$index] : null;
@@ -61,7 +61,7 @@ class TagTransformer extends TransformerAbstract
     public static function transformResponse($index)
     {
         $attribute = [
-            'name' => 'categoria',
+            'name' => 'tag',
         ];
 
         return isset($attribute[$index]) ? $attribute[$index] : null;
@@ -71,7 +71,7 @@ class TagTransformer extends TransformerAbstract
     {
         $attributes = [
             'id' => 'id',
-            'categoria' => 'name',
+            'tag' => 'name',
         ];
 
         return isset($attributes[$index]) ? $attributes[$index] : null;

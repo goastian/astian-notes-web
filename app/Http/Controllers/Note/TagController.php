@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers\Note;
 
+use App\Events\DestroyTagEvent;
+use App\Events\StoreTagEvent;
+use App\Events\UpdateTagEvent;
 use App\Http\Controllers\GlobalController as Controller;
+use App\Models\Note\Note;
 use App\Models\Note\Tag;
 use App\Transformers\Note\TagTransformer;
 use Elyerr\ApiResponse\Exceptions\ReportError;
@@ -45,11 +49,11 @@ class TagController extends Controller
         $tags = Tag::where('user_id', $this->user()->id)->get();
 
         //se restringen a 4 categorias
-        throw_if(count($tags) > 4 and !$this->userCan('notes_pro'),
-            new ReportError(Lang::get("Acciones estan registringidas despues de " . count($tags) . "etiquetas"), 403));
+        throw_if(count($tags) > 4 and !$this->userCan('notes_pro') and !$this->userCan('admin'),
+            new ReportError(Lang::get("Acciones estan registringidas despues de " . count($tags) . " etiquetas"), 403));
 
         $this->validate($request, [
-            'name' => ['required', Rule::notIn($tags->pluck('tag'))],
+            'name' => ['required', Rule::notIn($tags->pluck('name'))],
         ]);
 
         DB::transaction(function () use ($request, $tag) {
@@ -57,6 +61,8 @@ class TagController extends Controller
             $tag = $tag->fill($request->only('name'));
             $tag->user_id = $this->user()->id;
             $tag->save();
+
+            StoreTagEvent::dispatch();
         });
 
         return $this->showOne($tag, $tag->transformer, 201);
@@ -93,6 +99,8 @@ class TagController extends Controller
             if ($this->is_diferent($tag->name, $request->name)) {
                 $tag->name = $request->name;
                 $tag->push();
+
+                UpdateTagEvent::dispatch();
             }
         });
 
@@ -106,12 +114,21 @@ class TagController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Tag $tag)
+    public function destroy(Tag $tag, Note $note)
     {
         throw_unless($tag->user_id == $this->user()->id,
             new ReportError(Lang::get('Usuario no autorizado'), 403));
 
-        $tag->delete();
+        DB::transaction(function () use ($tag, $note) {
+
+            DB::table($note->table)->where('tag_id', $tag->id)->update([
+                'tag_id' => null,
+            ]);
+
+            $tag->delete();
+
+            DestroyTagEvent::dispatch();
+        });
 
         return $this->showOne($tag, $tag->transformer);
     }

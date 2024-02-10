@@ -15,6 +15,7 @@ class Note extends Master
     public $transformer = NoteTransformer::class;
 
     protected $fillable = [
+        'title',
         'text',
         'body',
         'tag_id',

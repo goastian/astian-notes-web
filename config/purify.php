@@ -11,7 +11,7 @@ return [
     |
     | This option defines the default config that is provided to HTMLPurifier.
     |
-    */
+     */
 
     'default' => 'default',
 
@@ -35,14 +35,14 @@ return [
     |   AutoFormat.AutoParagraph    Newlines are converted in to paragraphs whenever possible.
     |   AutoFormat.RemoveEmpty      Remove empty elements that contribute no semantic information to the document.
     |
-    */
+     */
 
     'configs' => [
 
         'default' => [
             'Core.Encoding' => 'utf-8',
             'HTML.Doctype' => 'HTML 4.01 Transitional',
-            'HTML.Allowed' => 'h1,h2,h3,h4,h5,h6,b,strong,i,em,s,del,a[href|title],ul,ol,li,p[style],br,span,img[width|height|alt|src],blockquote',
+            'HTML.Allowed' => 'h1[class],h2[class],h3[class],h4[class],h5[class],h6[class],b[class],pre[class][spellcheck],strong[class],i[class],em[class],s[class],del[class],a[href|title],ul[class],ol[class],li[class],p[style],span[class],blockquote[class]',
             'HTML.ForbiddenElements' => '',
             'CSS.AllowedProperties' => 'font,font-size,font-weight,font-style,font-family,text-decoration,padding-left,color,background-color,text-align',
             'AutoFormat.AutoParagraph' => false,
@@ -66,7 +66,7 @@ return [
     |
     | Documentation: http://htmlpurifier.org/docs/enduser-customize.html
     |
-    */
+     */
 
     'definitions' => Html5Definition::class,
 
@@ -86,7 +86,7 @@ return [
     | CSS should be extending $definition->info['css-attribute'] = values
     | See HTMLPurifier_CSSDefinition for further explanation
     |
-    */
+     */
 
     'css-definitions' => null,
 
@@ -99,7 +99,7 @@ return [
     | If the filesystem cache is in use, the path must be writable through the
     | storage disk by the web server, otherwise an exception will be thrown.
     |
-    */
+     */
 
     'serializer' => [
         'driver' => env('CACHE_DRIVER', 'file'),

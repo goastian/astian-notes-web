@@ -33,6 +33,7 @@ class NoteTransformer extends TransformerAbstract
     {
         return [
             'id' => $note->id,
+            'titulo' => $note->title,
             'cuerpo' => $note->body,
             'audio' => $note->audio,
             'categoria' => $note->tag_id,
@@ -51,6 +52,7 @@ class NoteTransformer extends TransformerAbstract
     public static function transformRequest($index)
     {
         $attribute = [
+            'titulo' => 'title',
             'cuerpo' => 'body',
             'audio' => 'audio',
             'categoria' => 'tag_id',
@@ -62,6 +64,7 @@ class NoteTransformer extends TransformerAbstract
     public static function transformResponse($index)
     {
         $attribute = [
+            'title' => 'titulo',
             'body' => 'cuerpo',
             'audio' => 'audio',
             'tag_id' => 'categoria',
@@ -74,6 +77,7 @@ class NoteTransformer extends TransformerAbstract
     {
         $attributes = [
             'id' => 'id',
+            'titulo' => 'title',
             'cuerpo' => 'body',
             'audio' => 'audio',
             'categoria' => 'tag_id',

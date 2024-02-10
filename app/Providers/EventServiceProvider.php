@@ -26,6 +26,16 @@ class EventServiceProvider extends ServiceProvider
             \App\Listeners\DestroyNoteLiteners::class,
         ],
 
+        \App\Events\StoreTagEvent::class => [
+            \App\Listeners\StoreTagListener::class,
+        ],
+        \App\Events\UpdateTagEvent::class => [
+            \App\Listeners\UpdateTagListener::class,
+        ],
+        \App\Events\DestroyTagEvent::class => [
+            \App\Listeners\DestroyTagListener::class,
+        ],
+
     ];
 
     /**

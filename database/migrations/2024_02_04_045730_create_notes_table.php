@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('notes', function (Blueprint $table) {
             $table->uuid('id')->unique();
+            $table->string('title');
             $table->text('body')->nullable();
             $table->string('audio')->nullable();
             $table->uuid('tag_id')->nullable();
