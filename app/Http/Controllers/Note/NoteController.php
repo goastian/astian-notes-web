@@ -81,7 +81,7 @@ class NoteController extends Controller
         throw_unless($note->user_id == $this->user()->id,
             new ReportError(Lang::get('Usuario no autorizado'), 403));
 
-        return $this->showOne($note);
+        return $this->showOne($note, $note->transformer);
     }
 
     /**
@@ -99,8 +99,8 @@ class NoteController extends Controller
         $this->validate($request, [
             'title' => ['max:50'],
             'body' => ['max:1000'],
-            'audio' => ['file', 'mimes:audio', 'mimetypes:audio/*', 'max:512000'],
-            'tag_id' => ['exist:tags,id'],
+            // 'audio' => ['file', 'mimes:audio', 'mimetypes:audio/*', 'max:512000'],
+            'tag_id' => ['exists:tags,id'],
         ]);
 
         DB::transaction(function () use ($request, $note) {
@@ -114,6 +114,11 @@ class NoteController extends Controller
             if ($this->is_diferent($note->body, $request->body)) {
                 $updated = true;
                 $note->body = Purify::clean($request->body);
+            }
+
+            if ($this->is_diferent($note->tag_id, $request->tag_id)) {
+                $updated = true;
+                $note->tag_id = $request->tag_id;
             }
 
             if ($this->is_diferent($note->audio, $request->audio)) {

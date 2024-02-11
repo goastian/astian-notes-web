@@ -2,10 +2,15 @@
 
 namespace App\Transformers\Note;
 
+use App\Models\Note\Tag;
+use Elyerr\ApiResponse\Assets\Asset;
 use League\Fractal\TransformerAbstract;
 
 class NoteTransformer extends TransformerAbstract
 {
+
+    use Asset;
+
     /**
      * List of resources to automatically include
      *
@@ -31,20 +36,23 @@ class NoteTransformer extends TransformerAbstract
      */
     public function transform($note)
     {
+        $tag = Tag::find($note->tag_id);
+
         return [
             'id' => $note->id,
             'titulo' => $note->title,
             'cuerpo' => $note->body,
             'audio' => $note->audio,
-            'categoria' => $note->tag_id,
-            'creado' => $note->created_at,
-            'actualizado' => $note->updated_at,
+            'etiqueta_id' => $note->tag_id,
+            'etiqueta' => $tag ? $tag->name : null,
+            'creado' => $this->format_date($note->created_at),
+            'actualizado' => $this->format_date($note->updated_at),
             'links' => [
                 'parent' => route('notes.index'),
-                'store' => route('notes.index'),
-                'show' => route('notes.index', ['note' => $note->id]),
-                'update' => route('notes.index', ['note' => $note->id]),
-                'destroy' => route('notes.index', ['note' => $note->id]),
+                'store' => route('notes.store'),
+                'show' => route('notes.show', ['note' => $note->id]),
+                'update' => route('notes.update', ['note' => $note->id]),
+                'destroy' => route('notes.destroy', ['note' => $note->id]),
             ],
         ];
     }
@@ -55,7 +63,7 @@ class NoteTransformer extends TransformerAbstract
             'titulo' => 'title',
             'cuerpo' => 'body',
             'audio' => 'audio',
-            'categoria' => 'tag_id',
+            'etiqueta_id' => 'tag_id',
         ];
 
         return isset($attribute[$index]) ? $attribute[$index] : null;
@@ -67,7 +75,7 @@ class NoteTransformer extends TransformerAbstract
             'title' => 'titulo',
             'body' => 'cuerpo',
             'audio' => 'audio',
-            'tag_id' => 'categoria',
+            'tag_id' => 'etiqueta_id',
         ];
 
         return isset($attribute[$index]) ? $attribute[$index] : null;
@@ -80,7 +88,7 @@ class NoteTransformer extends TransformerAbstract
             'titulo' => 'title',
             'cuerpo' => 'body',
             'audio' => 'audio',
-            'categoria' => 'tag_id',
+            'etiqueta_id' => 'tag_id',
             'creado' => 'created_at',
             'updated_at' => 'updated_at',
         ];
