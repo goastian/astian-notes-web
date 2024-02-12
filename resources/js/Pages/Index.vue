@@ -54,7 +54,6 @@ export default {
         if (this.$route.params.id) {
             this.getNotesFilter();
         } else {
-            console.log(this.$route.params.id);
             this.getNotes();
         }
     },
@@ -167,7 +166,6 @@ export default {
 
 <style scoped lang="scss">
 .card {
-    
     margin-left: 0.5%;
     margin-top: 0.5%;
     margin-bottom: 0.5%;
