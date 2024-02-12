@@ -1,4 +1,75 @@
 // Import all of Bootstrap's CSS
 @import "bootstrap/scss/bootstrap";
 @import "bootstrap-icons";
-@import "__colors.scss";
+
+:root {
+    --primary: #00b9b5;
+    --secondary: #e36159;
+    --ternary: #8dc73f;
+    --quaternary: #bd1c7c;
+    --white: #f6f9fd;
+    --white-opaque: #7895ebe8;
+    --dark: #191a1f;
+    --blue: #4c8ff4;
+    --skyblue: #5177ccb5;
+    --code: #091226b5;
+    --font: 'monospace';
+    --font-size: "12px";
+}
+
+.btn-primary,
+.bg-primary {
+    background-color: var(--primary) !important;
+    border: var(--primary);
+    color: var(--white);
+}
+
+.btn-secondary,
+.bg-secondary {
+    background-color: var(--secondary) !important;
+    border: var(--secondary);
+    color: var(--white);
+}
+
+.btn-ternary,
+.bg-ternary {
+    background-color: var(--ternary) !important;
+    border: var(--ternary);
+    color: var(--code);
+}
+
+.btn-quaternary,
+.bg-quaternary {
+    background-color: var(--quaternary) !important;
+    border: var(--quaternary);
+    color: var(--white);
+}
+
+.bg-light {
+    background-color: var(--white) !important;
+    color: var(--dark) !important;
+}
+
+.astian-primary {
+    background-color: var(--primary);
+    color: var(--white);
+}
+
+.astian-ligth {
+    background-color: var(--white);
+    color: var(--dark);
+}
+
+.ql-syntax {
+    background-color: var(--code);
+    color: var(--white);
+    overflow: visible !important;
+    padding: 1%;
+    border-radius: 0.2%;
+    font-family: var(--font);
+}
+
+.errors {
+    color: var(--secondary);
+    font-size: var(--font-size);
+}

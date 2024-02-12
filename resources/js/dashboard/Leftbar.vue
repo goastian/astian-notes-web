@@ -1,0 +1,151 @@
+<template>
+    <aside class="side bg-light pt-4">
+        <ul>
+            <li>
+                <i class="bi bi-journal-bookmark m-3"></i>
+                <router-link
+                    class="text-ligth"
+                    :to="{ name: 'notes.create' }"
+                    @click="isClicked()"
+                >
+                    Notas
+                </router-link>
+            </li>
+            <li class="mt-2">
+                <i class="bi bi-bookmarks-fill m-3"></i>
+                <router-link
+                    class="text-ligth"
+                    :to="{ name: 'tag.create' }"
+                    @click="isClicked()"
+                >
+                    Tags
+                </router-link>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <i class="bi bi-bookmark-heart"></i> Etiquetas
+                <ul>
+                    <li>
+                        <router-link
+                            :to="{ name: 'notes' }"
+                            @click="isClicked()"
+                        >
+                            Todas
+                        </router-link>
+                    </li>
+                    <li class="mt-2" v-for="(item, index) in tags" :key="index">
+                        <a href="#" @click="search(item.id)">
+                            <i class="bi bi-tag"></i>{{ item.tag }}
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </aside>
+</template>
+<script>
+export default {
+    emits: ["selectedMenu"],
+
+    data() {
+        return {
+            tags: {},
+            app_name: process.env.MIX_APP_NAME,
+        };
+    },
+
+    mounted() {
+        window.addEventListener("resize", this.screenIsChanging);
+        this.screenIsChanging();
+        this.getTags();
+        this.listenEvents();
+    },
+
+    methods: {
+        screenIsChanging() {
+            if (window.innerWidth < 940) {
+                this.$emit("selectedMenu", window.innerWidth < 940);
+            }
+        },
+
+        getTags() {
+            this.$host
+                .get("/api/tags", { params: { per_page: 500 } })
+                .then((res) => {
+                    this.tags = res.data.data;
+                })
+                .catch((err) => {
+                    if (err.response) {
+                        this.errors.message = err.response.data.message;
+                    }
+                });
+        },
+
+        search(id) {
+            this.$router.push({
+                name: "notes",
+                params: {
+                    id: id,
+                },
+            });
+
+            this.isClicked();
+        },
+
+        isClicked() {
+            if (window.innerWidth < 940) {
+                this.$emit("selectedMenu", window.innerWidth < 940);
+            }
+        },
+
+        listenEvents() {
+            this.$echo
+                .private(this.$channels.ch_0())
+                .listen("StoreTagEvent", (e) => {
+                    this.getTags();
+                });
+
+            this.$echo
+                .private(this.$channels.ch_0())
+                .listen("UpdateTagEvent", (e) => {
+                    this.getTags();
+                });
+
+            this.$echo
+                .private(this.$channels.ch_0())
+                .listen("DestroyTagEvent", (e) => {
+                    this.getTags();
+                });
+        },
+    },
+};
+</script>
+
+<style scoped lang="scss">
+.side {
+    padding-top: 3%;
+    height: 100vh;
+    color: var(--dark);
+}
+
+.side ul:nth-child(1) {
+    padding-left: 1%;
+    list-style: none;
+    border-bottom: 2px solid var(--ternary);
+    padding-bottom: 4%;
+}
+
+.side ul:nth-child(2) {
+    list-style: none;
+    padding-left: 5%;
+}
+.side ul:nth-child(2) ul {
+    list-style: none;
+    padding-left: 8%;
+}
+
+.side a {
+    color: var(--code);
+}
+</style>

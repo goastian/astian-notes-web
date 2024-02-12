@@ -120,11 +120,6 @@ a {
     text-decoration: none;
 }
 
-.btn-primary {
-    background-color: #4c8ff4c2 !important;
-    border-color: #4c8ff4;
-}
-
 .col {
     flex: 0 0 auto;
     width: 33%;
@@ -145,23 +140,23 @@ a {
 .modal {
     --bs-modal-bg: $alpha;
     text-align: center;
-    text-shadow: 15% 15% #8dc73f;
+    text-shadow: 15% 15% var(--skyblue);
 }
 
 .modal-content {
-    background-color: rgba(92, 88, 210, 0.57);
+    background-color: var(--skyblue);
 }
 
 .modal .col a {
     width: 100%;
     border-radius: 5%;
-    color: rgb(197, 219, 215) !important;
+    color: var(--white);
     padding: 0;
     margin: 0;
 }
 
 .modal .col a:hover {
-    background-color: rgba(236, 64, 93, 0.637);
-    text-shadow: 4px 4px 4px rgba(213, 230, 219, 0.548);
+    background-color: var(--secondary);
+    text-shadow: 4px 4px 4px var(--white);
 }
 </style>

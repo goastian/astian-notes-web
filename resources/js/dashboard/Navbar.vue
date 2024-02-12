@@ -1,6 +1,9 @@
 <template>
-    <ul class="nav">
+    <ul class="nav bg-primary pt-2">
         <li class="nav-item" @click="Expand(status)">
+            <span class="mx-2">
+                {{ app_name }}
+            </span>
             <a href="#" class="btn btn-primary"
                 ><i class="bi bi-list h5"></i
             ></a>
@@ -13,17 +16,15 @@
             <a
                 class="btn btn-primary dropdown-toggle"
                 data-bs-toggle="dropdown"
-                aria-expanded="false"
+                aria-expanded="true"
             >
                 <i class="bi bi-bell-fill h5" @click="unreadNotification"></i>
-                <span
-                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                >
+                <span class="position-absolute badge rounded-pill bg-danger">
                     {{ unread_notifications.length }}
                     <span class="visually-hidden">unread messages</span>
                 </span>
             </a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-notify">
+            <ul class="dropdown-menu bg-secondary">
                 <li class="dropdown-item h5">
                     <a :href="host + '/notifications/unread'">
                         Notifications
@@ -34,7 +35,7 @@
                 </li>
                 <li class="dropdown-divider"></li>
                 <li
-                    class="dropdown-item"
+                    class="dropdown-item p-0"
                     v-for="(item, index) in unread_notifications"
                     :key="index"
                 >
@@ -52,26 +53,28 @@
                                 ]"
                             ></i>
                         </strong>
-                        <p>
-                            {{ item.mensaje }}
-                        </p>
                     </a>
                 </li>
             </ul>
         </li>
 
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown icon">
             <a
                 class="btn btn-primary dropdown-toggle"
                 data-bs-toggle="dropdown"
-                aria-expanded="false"
+                aria-expanded="true"
             >
-                <i class="bi bi-box-arrow-in-right h3"></i>
+                {{ user.nombre }}
+                <i class="bi bi-box-arrow-in-right h4 m-0"></i>
             </a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
-                <li>
-                    <a class="dropdown-item" href="#" @click="logout">Logout</a>
+            <ul class="dropdown-menu bg-ternary">
+                <li class="dropdown-item p-0">
+                    <a class="btn btn-link" @click="logout">
+                        <i class="bi bi-lock-fill mx-2"></i>
+                        Cerrar session
+                    </a>
                 </li>
+                <li class="dropdown-item dropdown-devider"></li>
             </ul>
         </li>
     </ul>
@@ -94,6 +97,8 @@ export default {
             notifications: {},
             unread_notifications: {},
             host: process.env.MIX_APP_SERVER,
+            app_name: process.env.MIX_APP_NAME,
+            user: {},
         };
     },
 
@@ -101,6 +106,7 @@ export default {
         window.addEventListener("resize", this.screenIsChanging);
         this.screenIsChanging();
         this.notification();
+        this.auth();
         this.unreadNotification();
         this.listenEvents();
     },
@@ -113,6 +119,19 @@ export default {
 
         screenIsChanging() {
             this.expand = window.innerWidth < 940;
+        },
+
+        auth() {
+            this.$server
+                .get("/api/gateway/user")
+                .then((res) => {
+                    this.user = res.data;
+                })
+                .catch((err) => {
+                    if (err.response) {
+                        console.log(err.response.data);
+                    }
+                });
         },
 
         logout() {
@@ -192,9 +211,18 @@ export default {
     },
 };
 </script>
-<style scoped lang="css">
-a {
-    color: #fdfdfdf7;
-    text-decoration: underline !important;
+
+<style lang="scss" scoped>
+.dropdown-item a {
+    text-decoration: none;
+    color: var(--dark);
+}
+
+.dropdown-item {
+    margin: 0 1%;
+}
+
+.nav-item {
+    margin-right: 2%;
 }
 </style>

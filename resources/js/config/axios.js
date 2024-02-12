@@ -5,7 +5,7 @@ export const $server = axios.create({
     baseURL: process.env.MIX_APP_SERVER,
     timeout: 5000,
     withCredentials: true,
-    headers: {
+    headers: { 
         Accept: "application/json",
         Authorization: "Bearer " + Cookies.get(process.env.MIX_ECHO_TOKEN),
     },
