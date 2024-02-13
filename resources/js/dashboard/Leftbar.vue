@@ -24,14 +24,14 @@
         </ul>
         <ul>
             <li>
-                <i class="bi bi-bookmark-heart"></i> Etiquetas
+                <i class="bi bi-list"></i> Menu
                 <ul>
                     <li>
                         <router-link
                             :to="{ name: 'notes' }"
                             @click="isClicked()"
                         >
-                            All
+                            <i class="bi bi-bookmarks-fill"></i> All
                         </router-link>
                     </li>
                     <li class="mt-2" v-for="(item, index) in tags" :key="index">
