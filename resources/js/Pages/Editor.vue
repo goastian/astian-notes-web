@@ -76,14 +76,14 @@
                 class="btn btn-secondary mt-3"
                 @click="save"
             >
-                Crear Nota
+                Save note <i class="bi bi-floppy-fill mx-2"></i>
             </button>
             <button
                 v-show="update"
                 class="btn btn-primary mt-3"
                 @click="updateNote"
             >
-                Actualizar Nota
+                Update Note <i class="bi bi-cloud-upload mx-2"></i>
             </button>
 
             <p class="text-primary mt-2" v-show="errors.message">

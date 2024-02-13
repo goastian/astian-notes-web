@@ -1,12 +1,12 @@
 <template>
     <!-- crear etiquetas-->
     <div class="row" v-show="!update">
-        <p class="m-2">Nueva tag</p>
+        <p class="m-2">Add new tag</p>
         <div class="col m-2">
             <input
                 type="text"
                 class="form-control"
-                placeholder="Nueva Etiqueta"
+                placeholder="write a new tag ..."
                 v-model="form.tag"
                 @keypress.enter="save"
             />
@@ -16,7 +16,7 @@
         </div>
         <div class="col m-2">
             <button class="btn btn-primary" @click="save">
-                Crear nueva etiqueta
+                save <i class="bi bi-floppy-fill mx-2"></i>
             </button>
         </div>
     </div>
@@ -24,7 +24,7 @@
 
     <!-- actualizar-->
     <div class="row" v-show="update">
-        <p class="m-2">Actualizar etiqueta</p>
+        <p class="m-2">Update tag</p>
         <div class="col m-2">
             <input
                 type="text"
@@ -42,7 +42,7 @@
                 class="btn btn-ternary"
                 @click="upgrade(this.tag.links.update)"
             >
-                Actuaizar
+                Update <i class="bi bi-cloud-upload mx-2"></i>
             </button>
         </div>
     </div>
@@ -53,7 +53,7 @@
     <div class="tag-list mt-3">
         <p class="mx-2">
             <i class="bi bi-tags"></i>
-            Etiquetas
+            Tags
         </p>
         <ul class="tag-list-item">
             <li v-for="(item, index) in tags" :key="index">
@@ -217,7 +217,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .col {
     flex: 0 0 auto;
 
@@ -240,7 +239,7 @@ export default {
     }
 
     @media (min-width: 940px) {
-       padding-left: 2rem;
+        padding-left: 2rem;
     }
 }
 

@@ -1,3 +1,17 @@
+<script setup>
+import { ref } from "vue";
+
+const CLOUD = process.env.MIX_MENU_CLOUD;
+const CALENDAR = process.env.MIX_MENU_CALENDAR;
+const CONTACTS = process.env.MIX_MENU_CONTACTS;
+const NOTES = process.env.MIX_MENU_NOTES;
+const OFFICE = process.env.MIX_MENU_OFFICE;
+const SYNC = process.env.MIX_MENU_SYNC;
+const DRIVE = process.env.MIX_MENU_DRIVE;
+const CHAT = process.env.MIX_MENU_CHAT;
+const SOCIAL = process.env.MIX_MENU_SOCIAL;
+</script>
+
 <template>
     <button
         type="button"
@@ -98,23 +112,7 @@
         </div>
     </div>
 </template>
-<script>
-export default {
-    data() {
-        return {
-            CLOUD: process.env.MIX_MENU_CLOUD,
-            CALENDAR: process.env.MIX_MENU_CALENDAR,
-            CONTACTS: process.env.MIX_MENU_CONTACTS,
-            NOTES: process.env.MIX_MENU_NOTES,
-            OFFICE: process.env.MIX_MENU_OFFICE,
-            SYNC: process.env.MIX_MENU_SYNC,
-            DRIVE: process.env.MIX_MENU_DRIVE,
-            CHAT: process.env.MIX_MENU_CHAT,
-            SOCIAL: process.env.MIX_MENU_SOCIAL,
-        };
-    },
-};
-</script>
+
 <style lang="scss" scoped>
 a {
     text-decoration: none;

@@ -14,9 +14,9 @@
                 <template v-slot:button>
                     <i class="bi bi-trash-fill h5 text-warning"></i>
                 </template>
-                <template v-slot:head> Eliminar </template>
+                <template v-slot:head> Remove Tag </template>
                 <template v-slot:body>
-                    Esta nota no se podrá recuperar luego que sea eliminada
+                    Are you sure you want to perform this action?
                 </template>
             </v-modal>
         </div>

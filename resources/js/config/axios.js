@@ -3,9 +3,9 @@ import Cookies from "js-cookie";
 
 export const $server = axios.create({
     baseURL: process.env.MIX_APP_SERVER,
-    timeout: 5000,
+    timeout: 6000,
     withCredentials: true,
-    headers: { 
+    headers: {
         Accept: "application/json",
         Authorization: "Bearer " + Cookies.get(process.env.MIX_ECHO_TOKEN),
     },
@@ -13,11 +13,10 @@ export const $server = axios.create({
 
 export const $host = axios.create({
     baseURL: process.env.MIX_APP_URL,
-    timeout: 5000,
+    timeout: 6000,
     withCredentials: true,
     headers: {
-        "X-Requested-With": "XMLHttpRequest",
         Accept: "application/json",
-        Authorization: Cookies.get(process.env.MIX_ECHO_TOKEN),
+        Authorization:"Bearer " + Cookies.get(process.env.MIX_ECHO_TOKEN),
     },
 });

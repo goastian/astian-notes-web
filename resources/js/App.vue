@@ -1,7 +1,7 @@
 <template>
     <div class="row m-0">
         <v-nav @expand="taggleLefbar" :status="toggle_lef_bar"></v-nav>
-        <div class="left" v-show="!toggle_lef_bar">
+        <div class="left px-0" v-show="!toggle_lef_bar">
             <v-left-bar @selected-menu="taggleLefbar"></v-left-bar>
         </div>
         <div :class="['p-0', [toggle_lef_bar ? 'body-expand' : 'body']]">

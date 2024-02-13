@@ -8,7 +8,7 @@
                     :to="{ name: 'notes.create' }"
                     @click="isClicked()"
                 >
-                    Notas
+                    Notes
                 </router-link>
             </li>
             <li class="mt-2">
@@ -31,7 +31,7 @@
                             :to="{ name: 'notes' }"
                             @click="isClicked()"
                         >
-                            Todas
+                            All
                         </router-link>
                     </li>
                     <li class="mt-2" v-for="(item, index) in tags" :key="index">

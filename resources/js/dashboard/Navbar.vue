@@ -21,10 +21,10 @@
                 <i class="bi bi-bell-fill h5" @click="unreadNotification"></i>
                 <span class="position-absolute badge rounded-pill bg-danger">
                     {{ unread_notifications.length }}
-                    <span class="visually-hidden">unread messages</span>
+                    <span class="visually-hidden">Unread messages</span>
                 </span>
             </a>
-            <ul class="dropdown-menu bg-secondary">
+            <ul class="dropdown-menu expand">
                 <li class="dropdown-item h5">
                     <a :href="host + '/notifications/unread'">
                         Notifications
@@ -67,14 +67,23 @@
                 {{ user.nombre }}
                 <i class="bi bi-box-arrow-in-right h4 m-0"></i>
             </a>
-            <ul class="dropdown-menu bg-ternary">
-                <li class="dropdown-item p-0">
-                    <a class="btn btn-link" @click="logout">
-                        <i class="bi bi-lock-fill mx-2"></i>
-                        Cerrar session
+            <ul class="dropdown-menu expand bg-light">
+                <li class="dropdown-item" >
+                    <a @click="logout" href="#">
+                        <i class="bi bi-lock-fill mx-1"></i>
+                        Logout
                     </a>
                 </li>
-                <li class="dropdown-item dropdown-devider"></li>
+              <!--  <li class="dropdown-item" v-show="!user.id">
+                    <a href="/redirect">
+                        <img
+                            class="float-start"
+                            src="../../img/favicon.svg"
+                            alt=""
+                        />
+                        <span class="mx-1"> Login with Astian</span>
+                    </a>
+                </li>-->
             </ul>
         </li>
     </ul>
@@ -105,9 +114,7 @@ export default {
     mounted() {
         window.addEventListener("resize", this.screenIsChanging);
         this.screenIsChanging();
-        this.notification();
         this.auth();
-        this.unreadNotification();
         this.listenEvents();
     },
 
@@ -126,9 +133,12 @@ export default {
                 .get("/api/gateway/user")
                 .then((res) => {
                     this.user = res.data;
+
+                    this.notification();
+                    this.unreadNotification();
                 })
                 .catch((err) => {
-                    if (err.response) {
+                    if (err.response && err.response.status == 401) {
                         console.log(err.response.data);
                     }
                 });
@@ -154,8 +164,8 @@ export default {
                     this.notifications = res.data.data;
                 })
                 .catch((err) => {
-                    if (err.response) {
-                        console.log(err.response);
+                    if (err.response && err.response.status == 401) {
+                        console.log(err.response.data);
                     }
                 });
         },
@@ -167,8 +177,8 @@ export default {
                     this.unread_notifications = res.data.data;
                 })
                 .catch((err) => {
-                    if (err.response) {
-                        console.log(err.response);
+                    if (err.response && err.response.status == 401) {
+                        console.log(err.response.data);
                     }
                 });
         },
@@ -180,8 +190,8 @@ export default {
                     this.notification();
                 })
                 .catch((err) => {
-                    if (err.response) {
-                        console.log(err.response);
+                    if (err.response && err.response.status == 401) {
+                        console.log(err.response.data);
                     }
                 });
         },
@@ -213,16 +223,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.expand {
+    padding: 5% 30% 7% 0% !important;
+}
 .dropdown-item a {
     text-decoration: none;
     color: var(--dark);
 }
 
-.dropdown-item {
-    margin: 0 1%;
+.dropdown-item a:hover {
+    text-decoration: dotted !important;
+    color: var(--primary);
 }
 
 .nav-item {
     margin-right: 2%;
+}
+
+.dropdown-item img {
+    width: 15%;
 }
 </style>

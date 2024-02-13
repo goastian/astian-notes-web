@@ -74,3 +74,14 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+.modal {
+    color: rgb(94, 97, 96);
+}
+
+.btn {
+    margin-left: 2%;
+}
+</style>
+1
