@@ -15,18 +15,25 @@ class StoreNoteEvent implements ShouldBroadcast
 
     /**
      * identificador unico del evento
-     * @var Strong
+     * @var String
      */
     public $socket;
+
+    /**
+     * identificador del usuario
+     * @var String
+     */
+    public $id;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($id)
     {
         $this->socket = uniqid();
+        $this->id = $id;
     }
 
     /**
@@ -36,8 +43,9 @@ class StoreNoteEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel(env('CHANNEL_NAME', 'test'));
+        return new PrivateChannel(env('CHANNEL_NAME', 'test') . '.' . $this->id);
     }
+
 
     /**
      * The event's broadcast name.

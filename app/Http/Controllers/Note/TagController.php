@@ -62,7 +62,7 @@ class TagController extends Controller
             $tag->user_id = $this->user()->id;
             $tag->save();
 
-            StoreTagEvent::dispatch();
+            StoreTagEvent::dispatch($this->user()->id);
         });
 
         return $this->showOne($tag, $tag->transformer, 201);
@@ -100,7 +100,7 @@ class TagController extends Controller
                 $tag->name = $request->name;
                 $tag->push();
 
-                UpdateTagEvent::dispatch();
+                UpdateTagEvent::dispatch($this->user()->id);
             }
         });
 
@@ -127,7 +127,7 @@ class TagController extends Controller
 
             $tag->delete();
 
-            DestroyTagEvent::dispatch();
+            DestroyTagEvent::dispatch($this->user()->id);
         });
 
         return $this->showOne($tag, $tag->transformer);

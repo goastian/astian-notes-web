@@ -63,9 +63,10 @@ class NoteController extends Controller
             $note->user_id = $this->user()->id;
             $note->tag_id = $request->tag_id;
             $note->save();
+
+            StoreNoteEvent::dispatch($this->user()->id);
         });
 
-        StoreNoteEvent::dispatch();
 
         return $this->showOne($note, $note->transformer, 201);
     }
@@ -130,7 +131,7 @@ class NoteController extends Controller
             }
 
             if ($updated) {
-                UpdateNoteEvent::dispatch();
+                UpdateNoteEvent::dispatch($this->user()->id);
                 $note->push();
             }
         });
@@ -151,7 +152,7 @@ class NoteController extends Controller
 
         $note->delete();
 
-        DestroyNoteEvent::dispatch();
+        DestroyNoteEvent::dispatch($this->user()->id);
 
         return $this->showOne($note);
     }
