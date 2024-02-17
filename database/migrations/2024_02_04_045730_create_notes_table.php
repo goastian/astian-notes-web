@@ -14,12 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('notes', function (Blueprint $table) {
-            $table->uuid('id')->unique();
+            $table->uuid('id')->unique()->index();
             $table->string('title');
             $table->text('body')->nullable();
             $table->string('audio')->nullable();
-            $table->uuid('tag_id')->nullable();
-            $table->uuid('user_id');
+            $table->uuid('tag_id')->nullable()->index();
+            $table->uuid('user_id')->index();
             $table->timestamps();
             $table->primary('id');
         });
