@@ -1,11 +1,12 @@
 <template>
     <ul class="nav bg-primary pt-2">
         <li class="nav-item" @click="Expand(status)">
-            <span class="mx-2">
-                {{ app_name }}
-            </span>
-            <a href="#" class="btn btn-primary"
-                ><i class="bi bi-list h5"></i
+            <a href="#" class="btn btn-primary">
+                <span class="mx-2">
+                    {{ app_name }}
+                </span>
+
+                <i class="bi bi-list h5"></i
             ></a>
         </li>
         <li class="nav-item ms-auto">
@@ -68,13 +69,13 @@
                 <i class="bi bi-box-arrow-in-right h4 m-0"></i>
             </a>
             <ul class="dropdown-menu expand bg-light">
-                <li class="dropdown-item" >
+                <li class="dropdown-item">
                     <a @click="logout" href="#">
                         <i class="bi bi-lock-fill mx-1"></i>
                         Logout
                     </a>
                 </li>
-              <!--  <li class="dropdown-item" v-show="!user.id">
+                <!--  <li class="dropdown-item" v-show="!user.id">
                     <a href="/redirect">
                         <img
                             class="float-start"
@@ -133,7 +134,6 @@ export default {
                 .get("/api/gateway/user")
                 .then((res) => {
                     this.user = res.data;
-
                     this.notification();
                     this.unreadNotification();
                 })

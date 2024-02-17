@@ -1,75 +1,48 @@
 <template>
     <!-- crear etiquetas-->
-    <div class="row" v-show="!update">
-        <p class="m-2">Add new tag</p>
+    <div class="row text-color">
+        <p class="m-2"></p>
         <div class="col m-2">
             <input
                 type="text"
                 class="form-control"
-                placeholder="write a new tag ..."
-                v-model="form.tag"
-                @keypress.enter="save"
+                placeholder="Tag name"
+                v-model="tag.tag"
             />
             <p class="errors" v-for="(item, index) in errors.tag" :key="index">
                 {{ item }}
             </p>
         </div>
         <div class="col m-2">
-            <button class="btn btn-primary" @click="save">
+            <button class="btn btn-primary" @click="save" v-show="!update">
                 save <i class="bi bi-floppy-fill mx-2"></i>
             </button>
-        </div>
-    </div>
-    <!--fin-->
 
-    <!-- actualizar-->
-    <div class="row" v-show="update">
-        <p class="m-2">Update tag</p>
-        <div class="col m-2">
-            <input
-                type="text"
-                class="form-control"
-                placeholder="Nueva Etiqueta"
-                v-model="tag.tag"
-                @keypress.enter="upgrade(this.tag.links.update)"
-            />
-            <p class="errors" v-for="(item, index) in errors.tag" :key="index">
-                {{ item }}
-            </p>
-        </div>
-        <div class="col m-2">
-            <button
-                class="btn btn-ternary"
-                @click="upgrade(this.tag.links.update)"
-            >
+            <button class="btn btn-ternary" @click="upgrade" v-show="update">
                 Update <i class="bi bi-cloud-upload mx-2"></i>
             </button>
         </div>
     </div>
 
-    <!--fin-->
-
     <!--Mostrar etiquetas-->
     <div class="tag-list mt-3">
-        <p class="mx-2">
+        <p class="mx-2 fw-bold text-color">
             <i class="bi bi-tags"></i>
             Tags
         </p>
         <ul class="tag-list-item">
-            <li v-for="(item, index) in tags" :key="index">
-                <button
-                    class="btn btn-secondary"
-                    @click="show(item.links.show)"
-                >
+            <li
+                class="bg-primary text-color px-1 py-1"
+                v-for="(item, index) in tags"
+                :key="index"
+            >
+                <button class="btn" @click="show(item.links.show)">
                     <i class="bi bi-cloud-arrow-up-fill"></i>
                 </button>
-                <a class="btn btn-link text-light">
-                    {{ item.tag }}
-                </a>
-                <button
-                    class="btn btn-secondary"
-                    @click="remove(item.links.destroy)"
-                >
+
+                {{ item.tag }}
+
+                <button class="btn" @click="remove(item.links.destroy, $event)">
                     <i class="bi bi-x-circle-fill"></i>
                 </button>
             </li>
@@ -92,7 +65,7 @@ export default {
                 //errores
                 message: null,
             },
-            form: {}, //data para registrar
+            button: {},
         };
     },
 
@@ -105,15 +78,21 @@ export default {
         /**
          * save new tags in the database
          */
-        save() {
+        save(event) {
+            this.button = event.target;
+            this.button.disabled = true;
+
             this.$host
-                .post("/api/tags", this.form)
+                .post("/api/tags", this.tag)
                 .then((res) => {
+                    this.button.disabled = false;
                     this.errors = {};
-                    this.form.tag = null;
-                    this.getTags();
+                    this.tag = {};
+                    //this.getTags();
                 })
                 .catch((err) => {
+                    this.button.disabled = false;
+
                     if (err.response && err.response.status == 403) {
                         this.errors.message = err.response.data.message;
                     }
@@ -144,16 +123,21 @@ export default {
 
         /**
          * Update one tag
-         * @param {*} link
          */
-        upgrade(link) {
+        upgrade(event) {
+            this.button = event.target;
+            this.button.disabled = true;
+
             this.$host
-                .put(link, this.tag)
+                .put(this.tag.links.update, this.tag)
                 .then((res) => {
-                    this.getTags();
+                    //  this.getTags();
                     this.update = false;
+                    this.button.disabled = false;
+                    this.tag = {};
                 })
                 .catch((err) => {
+                    this.button.disabled = false;
                     if (err.response) {
                         this.errors.message = err.response.data.message;
                     }
@@ -164,13 +148,18 @@ export default {
          * Remove one tag
          * @param {*} link
          */
-        remove(link) {
+        remove(link, event) {
+            this.button = event.target;
+            this.button.disabled = true;
+
             this.$host
                 .delete(link)
                 .then((res) => {
-                    this.getTags();
+                    this.button.disabled = false;
+                    // this.getTags();
                 })
                 .catch((err) => {
+                    this.button.disabled = false;
                     if (err.response) {
                         this.errors.message = err.response.data.message;
                     }
@@ -195,19 +184,19 @@ export default {
 
         listenEvents() {
             this.$echo
-                .private(this.$channels.ch_0())
+                .private(this.$channels.ch_1(window.$auth.id))
                 .listen("StoreTagEvent", (e) => {
                     this.getTags();
                 });
 
             this.$echo
-                .private(this.$channels.ch_0())
+                .private(this.$channels.ch_1(window.$auth.id))
                 .listen("UpdateTagEvent", (e) => {
                     this.getTags();
                 });
 
             this.$echo
-                .private(this.$channels.ch_0())
+                .private(this.$channels.ch_1(window.$auth.id))
                 .listen("DestroyTagEvent", (e) => {
                     this.getTags();
                 });
@@ -245,8 +234,6 @@ export default {
 
 .tag-list-item li {
     display: inline-block;
-    background-color: var(--secondary);
-    color: var(--white);
     border-radius: 2%;
     margin-right: 1%;
     margin-top: 1%;

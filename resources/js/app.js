@@ -7,18 +7,24 @@ import { components } from "./config/globalComponents";
 import App from "./App.vue";
 import * as bootstrap from "bootstrap";
 
-const app = createApp(App);
+$server
+    .get("/api/gateway/user")
+    .then((res) => {
+        window.$auth = res.data;
 
-app.config.globalProperties.$server = $server;
-app.config.globalProperties.$host = $host;
-app.config.globalProperties.$echo = $echo;
-app.config.globalProperties.$channels = $channels;
+        const app = createApp(App);
 
-components.forEach((index) => {
-    app.component(index[0], index[1]);
-});
+        app.config.globalProperties.$server = $server;
+        app.config.globalProperties.$host = $host;
+        app.config.globalProperties.$echo = $echo;
+        app.config.globalProperties.$channels = $channels;
 
-app.use(router);
+        components.forEach((index) => {
+            app.component(index[0], index[1]);
+        });
 
+        app.use(router);
 
-app.mount("#app");
+        app.mount("#app");
+    })
+    .catch((err) => {});

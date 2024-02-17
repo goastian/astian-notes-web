@@ -1,4 +1,16 @@
 <template>
+    <div class="add text-color" v-show="!pages.total">
+        <div class="add-header h3">Do you have tasks to DO?</div>
+        <div class="add-body">
+            <button class="btn" @click="showForm">
+                <i class="bi bi-journal-plus text-primary"></i>
+            </button>
+        </div>
+        <div class="add-footer">
+            Don't forget them, keep them saved and remember whenever you want.
+        </div>
+    </div>
+
     <div class="card bg-light" v-for="(item, index) in notes" :key="index">
         <div class="card-head text-center fw-bold">
             <button class="btn float-start mx-2" @click="update(item.id)">
@@ -32,9 +44,11 @@
             </button>
         </div>
     </div>
-    <div class="foot">
-        <v-pagination :pages="pages" @changed-page="newPage"></v-pagination>
-    </div>
+    <v-pagination
+        v-show="pages.total > form.per_page"
+        :pages="pages"
+        @changed-page="newPage"
+    ></v-pagination>
 </template>
 <script>
 export default {
@@ -49,25 +63,25 @@ export default {
         };
     },
 
-    mounted() {
+    created() {
+        this.form.etiqueta_id = this.$route.params.id;
+
         this.listenEvents();
-        if (this.$route.params.id) {
-            this.getNotesFilter();
-        } else {
-            this.getNotes();
-        }
+    },
+
+    mounted() {
+        this.getNotes();
     },
 
     watch: {
         $route(to, from) {
             if (to.params.id) {
                 this.form.etiqueta_id = to.params.id;
-                this.getNotesFilter();
+            } else {
+                this.form.etiqueta_id = null;
             }
 
-            if (!to.params.id) {
-                this.getNotes();
-            }
+            this.getNotes();
         },
     },
 
@@ -79,6 +93,10 @@ export default {
                     id: id,
                 },
             });
+        },
+
+        showForm() {
+            this.$router.push({ name: "notes.create" });
         },
 
         update(id) {
@@ -93,25 +111,8 @@ export default {
         getNotes() {
             this.$host
                 .get("/api/notes", {
-                    params: {
-                        per_page: this.form.per_page,
-                        page: this.form.page,
-                    },
+                    params: this.form,
                 })
-                .then((res) => {
-                    this.notes = res.data.data;
-                    this.pages = res.data.meta.pagination;
-                })
-                .catch((err) => {
-                    if (err.response) {
-                        console.log(err.response);
-                    }
-                });
-        },
-
-        getNotesFilter() {
-            this.$host
-                .get("/api/notes", { params: this.form })
                 .then((res) => {
                     this.notes = res.data.data;
                     this.pages = res.data.meta.pagination;
@@ -127,7 +128,8 @@ export default {
             this.$host
                 .delete(event.links.destroy)
                 .then((res) => {
-                    this.getNotesFilter();
+                    this.form.etiqueta_id = to.params.id;
+                    //this.getNotes();
                 })
                 .catch((err) => {
                     if (err.response) {
@@ -143,21 +145,21 @@ export default {
 
         listenEvents() {
             this.$echo
-                .private(this.$channels.ch_0())
+                .private(this.$channels.ch_1(window.$auth.id))
                 .listen("StoreNoteEvent", (e) => {
                     this.getNotes();
                 });
 
             this.$echo
-                .private(this.$channels.ch_0())
+                .private(this.$channels.ch_1(window.$auth.id))
                 .listen("UpdateNoteEvent", (e) => {
                     this.getNotes();
                 });
 
             this.$echo
-                .private(this.$channels.ch_0())
+                .private(this.$channels.ch_1(window.$auth.id))
                 .listen("DestroyNoteEvent", (e) => {
-                    this.getNotesFilter();
+                    this.getNotes();
                 });
         },
     },
@@ -180,13 +182,16 @@ export default {
     }
 }
 
-button:hover i {
-    font-size: larger;
-    font-family: var(--font);
+.add {
+    text-align: center;
+    margin: 5% auto;
 }
 
-.foot {
-    clear: both;
-    margin-top: 80vh;
+.add-body {
+    margin: 1% 0;
+}
+
+.add-body i {
+    font-size: 5em;
 }
 </style>

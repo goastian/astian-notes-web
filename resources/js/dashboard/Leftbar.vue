@@ -24,7 +24,7 @@
         </ul>
         <ul>
             <li>
-                <i class="bi bi-list"></i> Menu
+                <i class="bi bi-list"></i> <span class="fw-bold text-color">Menu</span>
                 <ul>
                     <li>
                         <router-link
@@ -101,19 +101,19 @@ export default {
 
         listenEvents() {
             this.$echo
-                .private(this.$channels.ch_0())
+                .private(this.$channels.ch_1(window.$auth.id))
                 .listen("StoreTagEvent", (e) => {
                     this.getTags();
                 });
 
             this.$echo
-                .private(this.$channels.ch_0())
+                .private(this.$channels.ch_1(window.$auth.id))
                 .listen("UpdateTagEvent", (e) => {
                     this.getTags();
                 });
 
             this.$echo
-                .private(this.$channels.ch_0())
+                .private(this.$channels.ch_1(window.$auth.id))
                 .listen("DestroyTagEvent", (e) => {
                     this.getTags();
                 });

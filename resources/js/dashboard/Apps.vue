@@ -6,10 +6,7 @@ const CALENDAR = process.env.MIX_MENU_CALENDAR;
 const CONTACTS = process.env.MIX_MENU_CONTACTS;
 const NOTES = process.env.MIX_MENU_NOTES;
 const OFFICE = process.env.MIX_MENU_OFFICE;
-const SYNC = process.env.MIX_MENU_SYNC;
-const DRIVE = process.env.MIX_MENU_DRIVE;
 const CHAT = process.env.MIX_MENU_CHAT;
-const SOCIAL = process.env.MIX_MENU_SOCIAL;
 </script>
 
 <template>
@@ -72,7 +69,7 @@ const SOCIAL = process.env.MIX_MENU_SOCIAL;
                         <div class="col">
                             <a :href="NOTES" class="btn btn-link">
                                 <span>Notes</span>
-                                <i class="bi bi-floppy-fill"> </i>
+                                <i class="bi bi-journal-bookmark-fill"></i>
                             </a>
                         </div>
                         <div class="col">
@@ -82,31 +79,17 @@ const SOCIAL = process.env.MIX_MENU_SOCIAL;
                                 </i>
                             </a>
                         </div>
-                        <div class="col">
-                            <a :href="SYNC" class="btn btn-link">
-                                <span>Sync</span>
-                                <i class="bi bi-arrow-repeat"></i>
-                            </a>
-                        </div>
-                        <div class="col">
-                            <a :href="DRIVE" class="btn btn-link">
-                                <span>Drive</span>
-                                <i class="bi bi-hdd-rack-fill"></i>
-                            </a>
-                        </div>
+
                         <div class="col">
                             <a :href="CHAT" class="btn btn-link">
                                 <span>Chat</span>
                                 <i class="bi bi-chat-dots-fill"></i>
                             </a>
                         </div>
-                        <div class="col">
-                            <a :href="SOCIAL" class="btn btn-link">
-                                <span>Social</span>
-                                <i class="bi bi-globe"></i>
-                            </a>
-                        </div>
                     </div>
+                </div>
+                <div class="modal-footer text-center">
+                    <a href="#" class="btn btn-link text-light border-bottom"> More Apps </a>
                 </div>
             </div>
         </div>
@@ -120,7 +103,7 @@ a {
 
 .col {
     flex: 0 0 auto;
-    width: 33%;
+    width: 48%;
     border-radius: 50%;
 }
 .col span {
@@ -154,7 +137,7 @@ a {
 }
 
 .modal .col a:hover {
-    background-color: var(--secondary);
-    text-shadow: 4px 4px 4px var(--white);
+    color: var(--secondary);
+    text-shadow: 2px 2px 2px var(--white);
 }
 </style>
