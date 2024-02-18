@@ -1,0 +1,104 @@
+<template>
+    <div class="container-fluid mx-0 px-0 text-color">
+        <nav class="navbar navbar-light bg-primary">
+            <div class="container-fluid">
+                <a class="navbar-brand text-light mx-3">
+                    {{ title }}<i class="bi bi-journal-plus mx-2"></i>
+                </a>
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="btn nav-link text-light" :href="home_page"
+                            >Home</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn nav-link text-light" :href="register"
+                            >Register</a
+                        >
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <main class="main">
+            <p v-text="title"></p>
+            <p>
+                Keep your tasks secure, remember them, and access them from
+                anywhere you want.
+            </p>
+
+            <a class="btn btn-primary btn-lg text-light" :href="login">Login</a>
+        </main>
+        <footer>
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="btn btn-link" :href="policy">Privacy Policy</a>
+                </li>
+                <li class="nav-item nav-item-avtive">
+                    <a class="btn btn-link" :href="developer"
+                        >Desarrolladores</a
+                    >
+                </li>
+                <li class="nav-item nav-item-avtive">
+                    <a class="btn btn-link" :href="terms">Terms of Service</a>
+                </li>
+                <li class="nav-item nav-item-avtive">
+                    <a class="btn btn-link" :href="contact">Contact Us</a>
+                </li>
+            </ul>
+            <div class="text-center">
+                Copyright © {{ year }} - <strong> {{ title }} </strong>, All
+                Rights Reserved
+            </div>
+        </footer>
+    </div>
+</template>
+<script>
+export default {
+    data() {
+        return {
+            title: process.env.MIX_APP_NAME,
+            year: new Date().getFullYear(),
+            home_page: process.env.MIX_HOME_PAGE,
+            login: "/redirect",
+            register: process.env.MIX_HOME_REGISTER,
+            policy: process.env.MIX_HOME_POLICY,
+            developer: process.env.MIX_HOME_DEVELOPER,
+            terms: process.env.MIX_HOME_TERMS,
+            contact: process.env.MIX_HOME_CONTACT,
+        };
+    },
+};
+</script>
+
+<style lang="scss" scoped>
+.main {
+    text-align: center;
+    height: 82vh;
+    padding-top: 10vh;
+}
+
+.main .btn {
+    width: 20%;
+    margin-top: 2%;
+}
+
+p:nth-child(1) {
+    font-size: 3em;
+}
+
+p:nth-child(2) {
+    font-size: 1.5em;
+    margin-top: 3%;
+}
+.btn:hover {
+    font-weight: normal !important;
+}
+
+footer {
+    font-size: 0.9em;
+}
+
+.btn-link {
+    font-size: 1em !important;
+}
+</style>
