@@ -9,7 +9,7 @@ import Login from "./Login/Login.vue";
 
 //bootstrap
 import * as bootstrap from "bootstrap";
-//import "./config/matomo";
+import "./config/matomo";
 
 /**
  * Cheking Routes from VueRouter
