@@ -1,5 +1,5 @@
 <template>
-    <div class="row content">
+    <div class="row content-editor">
         <div class="category">
             <input
                 type="text"
@@ -172,7 +172,6 @@ export default {
                 })
                 .catch((err) => {
                     if (err.response) {
-                        console.log(err.response);
                     }
                 });
         },
@@ -189,7 +188,7 @@ export default {
                     this.button.disabled = false;
                     this.form = res.data.data;
                     this.quill.root.innerHTML = this.form.cuerpo;
-                    this.errors.message = "Nota actualizada";
+                    this.errors.message = "Notes was updated.";
                 })
                 .catch((err) => {
                     this.button.disabled = false;
@@ -216,7 +215,7 @@ export default {
 
                     if (err.response && err.response.status == 403) {
                         this.errors.message =
-                            "no cuenta con los permisos necesarios";
+                            "Don't you have rights.";
                     }
                     if (err.response && err.response.status == 422) {
                         this.errors = err.response.data.errors;
@@ -226,19 +225,19 @@ export default {
 
         listenEvents() {
             this.$echo
-                .private(this.$channels.ch_1(window.$auth.id))
+                .private(this.$channels.ch_1(window.$id))
                 .listen("StoreTagEvent", (e) => {
                     this.getTags();
                 });
 
             this.$echo
-                .private(this.$channels.ch_1(window.$auth.id))
+                .private(this.$channels.ch_1(window.$id))
                 .listen("UpdateTagEvent", (e) => {
                     this.getTags();
                 });
 
             this.$echo
-                .private(this.$channels.ch_1(window.$auth.id))
+                .private(this.$channels.ch_1(window.$id))
                 .listen("DestroyTagEvent", (e) => {
                     this.getTags();
                 });
@@ -248,7 +247,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.content {
+.content-editor {
     padding-left: 1%;
     margin: auto;
 

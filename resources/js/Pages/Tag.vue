@@ -1,7 +1,6 @@
 <template>
     <!-- crear etiquetas-->
-    <div class="row text-color">
-        <p class="m-2"></p>
+    <div class="row p-0 m-0 text-color">
         <div class="col m-2">
             <input
                 type="text"
@@ -88,7 +87,7 @@ export default {
                     this.button.disabled = false;
                     this.errors = {};
                     this.tag = {};
-                    //this.getTags();
+                    this.getTags();
                 })
                 .catch((err) => {
                     this.button.disabled = false;
@@ -131,7 +130,7 @@ export default {
             this.$host
                 .put(this.tag.links.update, this.tag)
                 .then((res) => {
-                    //  this.getTags();
+                    this.getTags();
                     this.update = false;
                     this.button.disabled = false;
                     this.tag = {};
@@ -156,7 +155,7 @@ export default {
                 .delete(link)
                 .then((res) => {
                     this.button.disabled = false;
-                    // this.getTags();
+                    this.getTags();
                 })
                 .catch((err) => {
                     this.button.disabled = false;
@@ -184,19 +183,19 @@ export default {
 
         listenEvents() {
             this.$echo
-                .private(this.$channels.ch_1(window.$auth.id))
+                .private(this.$channels.ch_1(window.$id))
                 .listen("StoreTagEvent", (e) => {
                     this.getTags();
                 });
 
             this.$echo
-                .private(this.$channels.ch_1(window.$auth.id))
+                .private(this.$channels.ch_1(window.$id))
                 .listen("UpdateTagEvent", (e) => {
                     this.getTags();
                 });
 
             this.$echo
-                .private(this.$channels.ch_1(window.$auth.id))
+                .private(this.$channels.ch_1(window.$id))
                 .listen("DestroyTagEvent", (e) => {
                     this.getTags();
                 });

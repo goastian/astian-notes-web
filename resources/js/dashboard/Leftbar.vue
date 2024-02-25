@@ -16,7 +16,7 @@
                 <router-link
                     class="text-ligth"
                     :to="{ name: 'tag.create' }"
-                    @click="isClicked()"
+                    @click="isClicked"
                 >
                     Tags
                 </router-link>
@@ -24,20 +24,26 @@
         </ul>
         <ul>
             <li>
-                <i class="bi bi-list"></i> <span class="fw-bold text-color">Menu</span>
+                <i class="bi bi-list"></i>
+                <span class="fw-bold text-color">Menu</span>
                 <ul>
                     <li>
-                        <router-link
-                            :to="{ name: 'notes' }"
-                            @click="isClicked()"
-                        >
+                        <router-link :to="{ name: 'notes' }" @click="isClicked">
                             <i class="bi bi-bookmarks-fill"></i> All
                         </router-link>
                     </li>
                     <li class="mt-2" v-for="(item, index) in tags" :key="index">
-                        <a href="#" @click="search(item.id)">
+                        <router-link
+                            :to="{
+                                name: 'notes',
+                                params: {
+                                    id: item.id,
+                                },
+                            }"
+                            @click="isClicked"
+                        >
                             <i class="bi bi-tag"></i>{{ item.tag }}
-                        </a>
+                        </router-link>
                     </li>
                 </ul>
             </li>
@@ -101,19 +107,19 @@ export default {
 
         listenEvents() {
             this.$echo
-                .private(this.$channels.ch_1(window.$auth.id))
+                .private(this.$channels.ch_1(window.$id))
                 .listen("StoreTagEvent", (e) => {
                     this.getTags();
                 });
 
             this.$echo
-                .private(this.$channels.ch_1(window.$auth.id))
+                .private(this.$channels.ch_1(window.$id))
                 .listen("UpdateTagEvent", (e) => {
                     this.getTags();
                 });
 
             this.$echo
-                .private(this.$channels.ch_1(window.$auth.id))
+                .private(this.$channels.ch_1(window.$id))
                 .listen("DestroyTagEvent", (e) => {
                     this.getTags();
                 });

@@ -4,7 +4,9 @@
         <div class="left" v-show="!toggle_lef_bar">
             <v-left-bar @selected-menu="taggleLefbar"></v-left-bar>
         </div>
-        <div :class="[toggle_lef_bar ? 'body-expand' : 'body']">
+        <div
+            :class="['content-body', [toggle_lef_bar ? 'body-expand' : 'body']]"
+        >
             <router-view></router-view>
         </div>
     </div>
@@ -35,7 +37,6 @@ export default {
 
 <style scoped lang="scss">
 .left {
-    flex: 0 0 auto;
     overflow-y: scroll;
     padding: 0;
     margin: 0;
@@ -50,12 +51,14 @@ export default {
     }
 }
 
-.body {
-    flex: 0 0 auto;
-    height: 100vh;
+.content-body {
+    min-height: 100vh;
     margin: 0;
     padding: 0;
+    overflow-y: auto;
+}
 
+.body {
     @media (min-width: 240px) {
         width: 100%;
     }
@@ -66,9 +69,6 @@ export default {
 }
 
 .body-expand {
-    flex: 0 0 auto;
     width: 100%;
-    height: 100vh;
-    overflow-y: scroll;
 }
 </style>

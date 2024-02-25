@@ -28,28 +28,6 @@
 
             <a class="btn btn-primary btn-lg text-light" :href="login">Login</a>
         </main>
-        <footer>
-            <ul class="nav">
-                <li class="nav-item">
-                    <a class="btn btn-link" :href="policy">Privacy Policy</a>
-                </li>
-                <li class="nav-item nav-item-avtive">
-                    <a class="btn btn-link" :href="developer"
-                        >Desarrolladores</a
-                    >
-                </li>
-                <li class="nav-item nav-item-avtive">
-                    <a class="btn btn-link" :href="terms">Terms of Service</a>
-                </li>
-                <li class="nav-item nav-item-avtive">
-                    <a class="btn btn-link" :href="contact">Contact Us</a>
-                </li>
-            </ul>
-            <div class="text-center">
-                Copyright © {{ year }} - <strong> {{ title }} </strong>, All
-                Rights Reserved
-            </div>
-        </footer>
     </div>
 </template>
 <script>
@@ -57,14 +35,9 @@ export default {
     data() {
         return {
             title: process.env.MIX_APP_NAME,
-            year: new Date().getFullYear(),
             home_page: process.env.MIX_HOME_PAGE,
             login: "/redirect",
             register: process.env.MIX_HOME_REGISTER,
-            policy: process.env.MIX_HOME_POLICY,
-            developer: process.env.MIX_HOME_DEVELOPER,
-            terms: process.env.MIX_HOME_TERMS,
-            contact: process.env.MIX_HOME_CONTACT,
         };
     },
 };

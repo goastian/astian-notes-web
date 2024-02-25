@@ -129,7 +129,7 @@ export default {
                 .delete(event.links.destroy)
                 .then((res) => {
                     this.form.etiqueta_id = to.params.id;
-                    //this.getNotes();
+                    this.getNotes();
                 })
                 .catch((err) => {
                     if (err.response) {
@@ -145,19 +145,19 @@ export default {
 
         listenEvents() {
             this.$echo
-                .private(this.$channels.ch_1(window.$auth.id))
+                .private(this.$channels.ch_1(window.$id))
                 .listen("StoreNoteEvent", (e) => {
                     this.getNotes();
                 });
 
             this.$echo
-                .private(this.$channels.ch_1(window.$auth.id))
+                .private(this.$channels.ch_1(window.$id))
                 .listen("UpdateNoteEvent", (e) => {
                     this.getNotes();
                 });
 
             this.$echo
-                .private(this.$channels.ch_1(window.$auth.id))
+                .private(this.$channels.ch_1(window.$id))
                 .listen("DestroyNoteEvent", (e) => {
                     this.getNotes();
                 });

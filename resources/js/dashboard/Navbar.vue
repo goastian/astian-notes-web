@@ -70,21 +70,18 @@
             </a>
             <ul class="dropdown-menu expand bg-light">
                 <li class="dropdown-item">
+                    <a :href="host"
+                        ><i class="bi bi-house-lock mx-1"></i>
+                        My Account
+                    </a>
+                </li>
+                <li class="dropdown-divider"></li>
+                <li class="dropdown-item">
                     <a @click="logout" href="#">
                         <i class="bi bi-lock-fill mx-1"></i>
                         Logout
                     </a>
                 </li>
-                <!--  <li class="dropdown-item" v-show="!user.id">
-                    <a href="/redirect">
-                        <img
-                            class="float-start"
-                            src="../../img/favicon.svg"
-                            alt=""
-                        />
-                        <span class="mx-1"> Login with Astian</span>
-                    </a>
-                </li>-->
             </ul>
         </li>
     </ul>
@@ -237,7 +234,13 @@ export default {
 }
 
 .nav-item {
-    margin-right: 2%;
+    @media (min-width: 240px) {
+        margin-top: 0%;
+    }
+
+    @media (min-width: 240px) {
+        margin-right: 2%;
+    }
 }
 
 .dropdown-item img {

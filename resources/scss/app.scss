@@ -1,6 +1,7 @@
 // Import all of Bootstrap's CSS
 @import "bootstrap/scss/bootstrap";
 @import "bootstrap-icons";
+
 :root {
     --primary: #00b9b5;
     --secondary: #e36159;
@@ -15,6 +16,38 @@
     --code: #091226b5;
     --font: 'monospace';
     --font-size: "12px";
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    background-image: url("https://cloud.astian.org/build/assets/auth-bg-8529ec0e.svg");
+    background-size: auto;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.content {
+    flex: 1;
+    margin: 0;
+}
+
+/** footer **/
+.footer {
+    font-size: 0.8em;
+}
+
+.footer a {
+    color: var(--white) !important;
+    font-weight: bold !important;
 }
 
 .btn-primary,
