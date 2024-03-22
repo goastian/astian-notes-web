@@ -13,39 +13,43 @@
             </div>
         </div>
 
-        <div class="card" v-for="(item, index) in notes" :key="index">
-            <div class="card-head text-center text-color fw-bold">
-                <button class="btn float-start mx-2" @click="update(item.id)">
-                    <i class="bi bi-eye-fill h5 text-success"></i>
-                </button>
-                {{ item.title }}
-                <v-modal
-                    :item="item"
-                    :target="'remove'.concat(item.id)"
-                    btn_primary="btn float-end mx-2"
-                    @is-accepted="remove"
-                >
-                    <template v-slot:button>
-                        <i class="bi bi-trash-fill h5 text-warning"></i>
-                    </template>
-                    <template v-slot:head> Remove Tag </template>
-                    <template v-slot:body>
-                        Are you sure you want to perform this action?
-                    </template>
-                </v-modal>
-            </div>
-            <div class="card-body text-color" v-html="item.body"></div>
-            <div class="">
-                <button
-                    v-show="item.tag"
-                    class="btn text-color"
-                    @click="search(item.tag_id)"
-                >
-                    <i class="bi bi-pin-angle-fill"></i>
-                    {{ item.tag }}
-                </button>
+        <div class="boxes">
+            <div class="box" v-for="(item, index) in notes" :key="index">
+                <div class="header">
+                    <button class="btn float-start" @click="update(item.id)">
+                        <i class="bi bi-eye-fill h5 text-success"></i>
+                    </button>
+                    {{ item.title }}
+
+                    <v-modal
+                        :item="item"
+                        :target="'remove'.concat(item.id)"
+                        btn_primary="btn float-end"
+                        @is-accepted="remove"
+                    >
+                        <template v-slot:button>
+                            <i class="bi bi-trash-fill h5 text-warning"></i>
+                        </template>
+                        <template v-slot:head> Remove Tag </template>
+                        <template v-slot:body>
+                            Are you sure you want to perform this action?
+                        </template>
+                    </v-modal>
+                </div>
+                <div class="body fw-light" v-html="item.body"></div>
+                <div class="">
+                    <button
+                        v-show="item.tag"
+                        class="btn text-light"
+                        @click="search(item.tag_id)"
+                    >
+                        <i class="bi bi-pin-angle-fill text-light"></i>
+                        {{ item.tag }}
+                    </button>
+                </div>
             </div>
         </div>
+
         <v-pagination
             v-show="pages.total > form.per_page"
             :pages="pages"
@@ -60,7 +64,7 @@ export default {
             notes: {},
             pages: {},
             form: {
-                per_page: 10,
+                per_page: 15,
                 page: 1,
                 tag_id: null,
             },
@@ -163,23 +167,30 @@ export default {
         },
 
         /**
-         * 
+         * Remove items
          */
         remove(event) {
             this.$host
                 .delete(event.links.destroy)
-                .then((res) => { 
+                .then((res) => {
                     this.form.tag_id = to.params.id;
                     this.getNotes();
                 })
                 .catch((err) => {});
         },
 
+        /**
+         * Change pagination
+         * @param {*} event
+         */
         newPage(event) {
             this.form.page = event;
             this.getNotes();
         },
 
+        /**
+         * Listen Events
+         */
         listenEvents() {
             this.$echo
                 .private(this.$channels.ch_1(this.$id))
@@ -204,21 +215,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.card {
-    margin-left: 0.5%;
-    margin-top: 0.5%;
-    margin-bottom: 0.5%;
-    margin-right: 0;
-
-    @media (min-width: 240px) {
-    }
-
-    @media (min-width: 940px) {
-        width: 32%;
-        float: left;
-    }
-}
-
 .add {
     text-align: center;
     margin: 5% auto;
@@ -230,5 +226,39 @@ export default {
 
 .add-body i {
     font-size: 5em;
+}
+
+.boxes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 2%;
+}
+
+.box {
+    flex: 1 1 auto;
+    margin-left: 1%;
+    border: 1px double;
+    padding: 1%;
+    margin-top: 1%;
+    border-color: var(--primary);
+    background-color: var(--code);
+    color: var(--white);
+    border-radius: 0.5%;
+    @media (min-width: 800px) {
+        max-width: 48%;
+    }
+    @media (min-width: 940px) {
+        max-width: 32%;
+    }
+}
+
+.box .header {
+    text-align: center;
+    margin-bottom: 5%;
+}
+
+.box .body {
+    text-align: justify;
 }
 </style>
