@@ -40,13 +40,13 @@ class NoteTransformer extends TransformerAbstract
 
         return [
             'id' => $note->id,
-            'titulo' => $note->title,
-            'cuerpo' => $note->body,
+            'title' => $note->title,
+            'body' => $note->body,
             'audio' => $note->audio,
-            'etiqueta_id' => $note->tag_id,
-            'etiqueta' => $tag ? $tag->name : null,
-            'creado' => $this->format_date($note->created_at),
-            'actualizado' => $this->format_date($note->updated_at),
+            'tag_id' => $note->tag_id,
+            'tag' => $tag ? $tag->name : null,
+            'created' => $this->format_date($note->created_at),
+            'updated' => $this->format_date($note->updated_at),
             'links' => [
                 'parent' => route('notes.index'),
                 'store' => route('notes.store'),
@@ -60,10 +60,10 @@ class NoteTransformer extends TransformerAbstract
     public static function transformRequest($index)
     {
         $attribute = [
-            'titulo' => 'title',
-            'cuerpo' => 'body',
+            'title' => 'title',
+            'body' => 'body',
             'audio' => 'audio',
-            'etiqueta_id' => 'tag_id',
+            'tag_id' => 'tag_id',
         ];
 
         return isset($attribute[$index]) ? $attribute[$index] : null;
@@ -72,10 +72,10 @@ class NoteTransformer extends TransformerAbstract
     public static function transformResponse($index)
     {
         $attribute = [
-            'title' => 'titulo',
-            'body' => 'cuerpo',
+            'title' => 'title',
+            'body' => 'body',
             'audio' => 'audio',
-            'tag_id' => 'etiqueta_id',
+            'tag_id' => 'tag_id',
         ];
 
         return isset($attribute[$index]) ? $attribute[$index] : null;
@@ -85,12 +85,12 @@ class NoteTransformer extends TransformerAbstract
     {
         $attributes = [
             'id' => 'id',
-            'titulo' => 'title',
-            'cuerpo' => 'body',
+            'title' => 'title',
+            'body' => 'body',
             'audio' => 'audio',
-            'etiqueta_id' => 'tag_id',
-            'creado' => 'created_at',
-            'updated_at' => 'updated_at',
+            'tag_id' => 'tag_id',
+            'created' => 'created_at',
+            'updated' => 'updated_at',
         ];
 
         return isset($attributes[$index]) ? $attributes[$index] : null;

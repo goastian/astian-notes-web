@@ -47,26 +47,20 @@ class NoteController extends Controller
     {
         $this->validate($request, [
             'title' => ['required', 'max:50'],
-            'body' => ['max:1000'],
-            'audio' => ['file', 'mimes:audio', 'mimetypes:audio/*', 'max:512000'],
-            'tag_id' => ['exists:tags,id'],
+            'body' => ['required', 'max:1000'],
+          //  'audio' => ['file', 'mimes:audio', 'mimetypes:audio/*', 'max:512000'],
+            'tag_id' => ['nullable','exists:tags,id'],
         ]);
-
-        throw_unless($request->body or $request->$note,
-            new ReportError(Lang::get('Al menos un campo es requerido'), 422));
 
         DB::transaction(function () use ($request, $note) {
             $note->title = $request->title;
             $note->body = Purify::clean($request->body);
-            $note->audio = $request->audio ?
-            Storage::disk('notes')->put($this->user()->id, $request->audio) : null;
             $note->user_id = $this->user()->id;
             $note->tag_id = $request->tag_id;
             $note->save();
 
             StoreNoteEvent::dispatch($this->user()->id);
         });
-
 
         return $this->showOne($note, $note->transformer, 201);
     }
@@ -98,10 +92,10 @@ class NoteController extends Controller
             new ReportError(Lang::get('Usuario no autorizado'), 403));
 
         $this->validate($request, [
-            'title' => ['max:50'],
-            'body' => ['max:1000'],
+            'title' => ['nullable','max:50'],
+            'body' => ['nullable','max:1000'],
             // 'audio' => ['file', 'mimes:audio', 'mimetypes:audio/*', 'max:512000'],
-            'tag_id' => ['exists:tags,id'],
+            'tag_id' => ['nullable','exists:tags,id'],
         ]);
 
         DB::transaction(function () use ($request, $note) {

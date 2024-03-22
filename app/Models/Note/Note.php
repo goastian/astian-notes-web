@@ -16,7 +16,6 @@ class Note extends Master
 
     protected $fillable = [
         'title',
-        'text',
         'body',
         'tag_id',
     ];
