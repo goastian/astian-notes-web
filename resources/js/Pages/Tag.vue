@@ -183,19 +183,19 @@ export default {
 
         listenEvents() {
             this.$echo
-                .private(this.$channels.ch_1(window.$id))
+                .private(this.$channels.ch_1(this.$id))
                 .listen("StoreTagEvent", (e) => {
                     this.getTags();
                 });
 
             this.$echo
-                .private(this.$channels.ch_1(window.$id))
+                .private(this.$channels.ch_1(this.$id))
                 .listen("UpdateTagEvent", (e) => {
                     this.getTags();
                 });
 
             this.$echo
-                .private(this.$channels.ch_1(window.$id))
+                .private(this.$channels.ch_1(this.$id))
                 .listen("DestroyTagEvent", (e) => {
                     this.getTags();
                 });

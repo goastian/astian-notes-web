@@ -81,11 +81,7 @@ export default {
                 .then((res) => {
                     this.tags = res.data.data;
                 })
-                .catch((err) => {
-                    if (err.response) {
-                        this.errors.message = err.response.data.message;
-                    }
-                });
+                .catch((err) => {});
         },
 
         search(id) {

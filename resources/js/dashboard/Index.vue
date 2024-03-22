@@ -1,11 +1,15 @@
 <template>
     <div class="row p-0 m-0">
-        <v-nav @expand="taggleLefbar" :status="toggle_lef_bar"></v-nav>
-        <div class="left" v-show="!toggle_lef_bar">
+        <v-nav @expand="taggleLefbar" :status="toggle_left_bar"></v-nav>
+        <div class="left" v-show="!toggle_left_bar">
             <v-left-bar @selected-menu="taggleLefbar"></v-left-bar>
         </div>
         <div
-            :class="['content-body', [toggle_lef_bar ? 'body-expand' : 'body']]"
+            :class="{
+                'content-body': true,
+                'body-expand': toggle_left_bar,
+                body: !toggle_left_bar,
+            }"
         >
             <router-view></router-view>
         </div>
@@ -23,13 +27,13 @@ export default {
 
     data() {
         return {
-            toggle_lef_bar: false,
+            toggle_left_bar: false,
         };
     },
 
     methods: {
         taggleLefbar(event) {
-            this.toggle_lef_bar = event;
+            this.toggle_left_bar = event;
         },
     },
 };

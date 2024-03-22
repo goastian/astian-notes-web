@@ -3,22 +3,19 @@
         <div class="category">
             <input
                 type="text"
-                v-model="form.titulo"
+                v-model="form.title"
                 class="form-control form-control-sm"
                 placeholder="Title ..."
             />
             <span
                 class="errors"
-                v-for="(item, index) in errors.titulo"
+                v-for="(item, index) in errors.title"
                 :key="index"
                 v-text="item"
             ></span>
         </div>
         <div class="category">
-            <select
-                class="form-control form-control-sm"
-                v-model="form.etiqueta_id"
-            >
+            <select class="form-control form-control-sm" v-model="form.tag_id">
                 <option
                     v-for="(item, index) in tags"
                     :key="index"
@@ -69,7 +66,7 @@
             <div id="editor"></div>
             <span
                 class="errors"
-                v-for="(item, index) in errors.cuerpo"
+                v-for="(item, index) in errors.body"
                 :key="index"
                 v-text="item"
             ></span>
@@ -104,7 +101,7 @@ export default {
                 message: null,
             },
             form: {
-                cuerpo: null,
+                body: null,
             },
             tags: {},
             button: null,
@@ -156,11 +153,7 @@ export default {
                 .then((res) => {
                     this.tags = res.data.data;
                 })
-                .catch((err) => {
-                    if (err.response) {
-                        console.log(err.response);
-                    }
-                });
+                .catch((err) => {});
         },
 
         getNote(id) {
@@ -168,12 +161,9 @@ export default {
                 .get("/api/notes/" + id)
                 .then((res) => {
                     this.form = res.data.data;
-                    this.quill.root.innerHTML = this.form.cuerpo;
+                    this.quill.root.innerHTML = this.form.body;
                 })
-                .catch((err) => {
-                    if (err.response) {
-                    }
-                });
+                .catch((err) => {});
         },
 
         updateNote($event) {
@@ -181,19 +171,19 @@ export default {
             this.button.disabled = true;
 
             this.errors.message = "";
-            this.form.cuerpo = this.quill.root.innerHTML;
+            this.form.body = this.quill.root.innerHTML;
             this.$host
                 .put(this.form.links.update, this.form)
                 .then((res) => {
                     this.button.disabled = false;
                     this.form = res.data.data;
-                    this.quill.root.innerHTML = this.form.cuerpo;
+                    this.quill.root.innerHTML = this.form.body;
                     this.errors.message = "Notes was updated.";
                 })
                 .catch((err) => {
                     this.button.disabled = false;
-                    if (err.response) {
-                        console.log(err.response);
+                    if (err.response && err.response.status == 422) {
+                        this.errors = err.response.data.errors;
                     }
                 });
         },
@@ -202,20 +192,21 @@ export default {
             this.button = $event.target;
             this.button.disabled = true;
 
-            this.form.cuerpo = this.quill.root.innerHTML;
+            this.form.body = this.quill.root.innerHTML;
+
             this.$host
                 .post("/api/notes", this.form)
                 .then((res) => {
                     this.button.disabled = false;
-                    this.$router.push({ name: "notes" });
                     this.errors = {};
+                    this.quill.root.innerHTML = "";
+                    this.$router.push({ name: "notes" });
                 })
                 .catch((err) => {
                     this.button.disabled = false;
 
                     if (err.response && err.response.status == 403) {
-                        this.errors.message =
-                            "Don't you have rights.";
+                        this.errors.message = "Don't you have rights.";
                     }
                     if (err.response && err.response.status == 422) {
                         this.errors = err.response.data.errors;
@@ -225,19 +216,19 @@ export default {
 
         listenEvents() {
             this.$echo
-                .private(this.$channels.ch_1(window.$id))
+                .private(this.$channels.ch_1(this.$id))
                 .listen("StoreTagEvent", (e) => {
                     this.getTags();
                 });
 
             this.$echo
-                .private(this.$channels.ch_1(window.$id))
+                .private(this.$channels.ch_1(this.$id))
                 .listen("UpdateTagEvent", (e) => {
                     this.getTags();
                 });
 
             this.$echo
-                .private(this.$channels.ch_1(window.$id))
+                .private(this.$channels.ch_1(this.$id))
                 .listen("DestroyTagEvent", (e) => {
                     this.getTags();
                 });
