@@ -47,7 +47,7 @@ class NoteController extends Controller
     {
         $this->validate($request, [
             'title' => ['required', 'max:50'],
-            'body' => ['required', 'max:1000'],
+            'body' => ['required', 'max:5000'],
           //  'audio' => ['file', 'mimes:audio', 'mimetypes:audio/*', 'max:512000'],
             'tag_id' => ['nullable','exists:tags,id'],
         ]);
@@ -93,7 +93,7 @@ class NoteController extends Controller
 
         $this->validate($request, [
             'title' => ['nullable','max:50'],
-            'body' => ['nullable','max:1000'],
+            'body' => ['nullable','max:5000'],
             // 'audio' => ['file', 'mimes:audio', 'mimetypes:audio/*', 'max:512000'],
             'tag_id' => ['nullable','exists:tags,id'],
         ]);
