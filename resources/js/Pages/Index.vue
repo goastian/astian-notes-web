@@ -74,11 +74,11 @@ export default {
     created() {
         this.form.tag_id = this.$route.params.id;
 
-        this.listenEvents();
     },
-
+    
     mounted() {
         this.getNotes();
+        this.listenEvents();
     },
 
     watch: {

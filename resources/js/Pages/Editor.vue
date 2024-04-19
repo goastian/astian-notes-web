@@ -110,13 +110,12 @@ export default {
 
     created() {
         this.getTags();
-        this.listenEvents();
         if (this.$route.params.id) {
             this.update = true;
             this.getNote(this.$route.params.id);
         }
     },
-
+    
     mounted() {
         this.quill = new Quill("#editor", {
             placeholder: "Write a new note",
@@ -126,6 +125,8 @@ export default {
                 toolbar: "#toolbar",
             },
         });
+
+        this.listenEvents();
     },
 
     watch: {
@@ -215,6 +216,7 @@ export default {
         },
 
         listenEvents() {
+            
             this.$echo
                 .private(this.$channels.ch_1(this.$id))
                 .listen("StoreTagEvent", (e) => {

@@ -68,7 +68,7 @@ export default {
         };
     },
 
-    created() {
+    mounted() {
         this.getTags();
         this.listenEvents();
     },

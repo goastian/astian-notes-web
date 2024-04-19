@@ -6,7 +6,7 @@ const options = {
     port: process.env.MIX_ECHO_SERVER_PORT,
     transport: process.env.MIX_ECHO_SERVER_PROTOCOL,
     headers: {
-        Authorization: Cookies.get(process.env.MIX_ECHO_TOKEN),
+        Authorization: "Bearer " + Cookies.get(process.env.MIX_ECHO_TOKEN),
     },
 };
 
