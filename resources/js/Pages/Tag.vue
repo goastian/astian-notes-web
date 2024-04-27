@@ -183,7 +183,7 @@ export default {
 
         listenEvents() {
             this.$echo
-                .private(this.$channels.ch_1(this.$id))
+                .private(this.$channels.ch_0())
                 .listen("StoreTagEvent", (e) => {
                     this.getTags();
                 });

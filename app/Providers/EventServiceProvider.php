@@ -12,31 +12,7 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array<class-string, array<int, class-string>>
      */
-    protected $listen = [
-
-        \App\Events\StoreNoteEvent::class => [
-            \App\Listeners\StoreNoteLiteners::class,
-        ],
-
-        \App\Events\UpdateNoteEvent::class => [
-            \App\Listeners\UpdateNoteLiteners::class,
-        ],
-
-        \App\Events\DestroyNoteEvent::class => [
-            \App\Listeners\DestroyNoteLiteners::class,
-        ],
-
-        \App\Events\StoreTagEvent::class => [
-            \App\Listeners\StoreTagListener::class,
-        ],
-        \App\Events\UpdateTagEvent::class => [
-            \App\Listeners\UpdateTagListener::class,
-        ],
-        \App\Events\DestroyTagEvent::class => [
-            \App\Listeners\DestroyTagListener::class,
-        ],
-
-    ];
+    protected $listen = [];
 
     /**
      * Register any events for your application.

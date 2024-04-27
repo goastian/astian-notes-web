@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Note;
 
 use App\Events\DestroyTagEvent;
-use App\Events\StoreTagEvent;
 use App\Events\UpdateTagEvent;
 use App\Http\Controllers\GlobalController as Controller;
 use App\Models\Note\Note;
@@ -62,7 +61,7 @@ class TagController extends Controller
             $tag->user_id = $this->user()->id;
             $tag->save();
 
-            StoreTagEvent::dispatch($this->user()->id);
+            $this->privateChannel("StoreTagEvent", "New tag created", config('echo-client.channel') . "." . $this->user()->id);
         });
 
         return $this->showOne($tag, $tag->transformer, 201);
@@ -100,7 +99,7 @@ class TagController extends Controller
                 $tag->name = $request->name;
                 $tag->push();
 
-                UpdateTagEvent::dispatch($this->user()->id);
+                $this->privateChannel("UpdateTagEvent", "Tag updated", config('echo-client.channel') . "." . $this->user()->id);
             }
         });
 
@@ -127,7 +126,7 @@ class TagController extends Controller
 
             $tag->delete();
 
-            DestroyTagEvent::dispatch($this->user()->id);
+            $this->privateChannel("DestroyTagEvent","Tag deleted", config('echo-client.channel') . "." . $this->user()->id);
         });
 
         return $this->showOne($tag, $tag->transformer);

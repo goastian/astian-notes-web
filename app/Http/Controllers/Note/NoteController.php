@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers\Note;
 
-use App\Events\DestroyNoteEvent;
-use App\Events\StoreNoteEvent;
-use App\Events\UpdateNoteEvent;
 use App\Http\Controllers\GlobalController as Controller;
 use App\Models\Note\Note;
 use App\Transformers\Note\NoteTransformer;
@@ -48,8 +45,8 @@ class NoteController extends Controller
         $this->validate($request, [
             'title' => ['required', 'max:50'],
             'body' => ['required', 'max:5000'],
-          //  'audio' => ['file', 'mimes:audio', 'mimetypes:audio/*', 'max:512000'],
-            'tag_id' => ['nullable','exists:tags,id'],
+            //  'audio' => ['file', 'mimes:audio', 'mimetypes:audio/*', 'max:512000'],
+            'tag_id' => ['nullable', 'exists:tags,id'],
         ]);
 
         DB::transaction(function () use ($request, $note) {
@@ -59,7 +56,7 @@ class NoteController extends Controller
             $note->tag_id = $request->tag_id;
             $note->save();
 
-            StoreNoteEvent::dispatch($this->user()->id);
+            $this->privateChannel("StoreNoteEvent", "new note created.", config('echo-client.channel') . "." . $this->user()->id);
         });
 
         return $this->showOne($note, $note->transformer, 201);
@@ -92,10 +89,10 @@ class NoteController extends Controller
             new ReportError(Lang::get('Usuario no autorizado'), 403));
 
         $this->validate($request, [
-            'title' => ['nullable','max:50'],
-            'body' => ['nullable','max:5000'],
+            'title' => ['nullable', 'max:50'],
+            'body' => ['nullable', 'max:5000'],
             // 'audio' => ['file', 'mimes:audio', 'mimetypes:audio/*', 'max:512000'],
-            'tag_id' => ['nullable','exists:tags,id'],
+            'tag_id' => ['nullable', 'exists:tags,id'],
         ]);
 
         DB::transaction(function () use ($request, $note) {
@@ -125,8 +122,8 @@ class NoteController extends Controller
             }
 
             if ($updated) {
-                UpdateNoteEvent::dispatch($this->user()->id);
                 $note->push();
+                $this->privateChannel("UpdateNoteEvent", "Note updated", config('echo-client.channel') . "." . $this->user()->id);
             }
         });
 
@@ -146,7 +143,7 @@ class NoteController extends Controller
 
         $note->delete();
 
-        DestroyNoteEvent::dispatch($this->user()->id);
+        $this->privateChannel("DestroyNoteEvent", "Note deleted", config('echo-client.channel') . "." . $this->user()->id);
 
         return $this->showOne($note);
     }
