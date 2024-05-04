@@ -48,8 +48,8 @@ class TagController extends Controller
         $tags = Tag::where('user_id', $this->user()->id)->get();
 
         //se restringen a 4 categorias
-        throw_if(count($tags) > 4 and !$this->userCan('notes_pro') and !$this->userCan('admin'),
-            new ReportError(Lang::get("Acciones estan registringidas despues de " . count($tags) . " etiquetas"), 403));
+       // throw_if(count($tags) > 4 and !$this->userCan('notes_pro') and !$this->userCan('admin'),
+        ///    new ReportError(Lang::get("Acciones estan registringidas despues de " . count($tags) . " etiquetas"), 403));
 
         $this->validate($request, [
             'name' => ['required', Rule::notIn($tags->pluck('name'))],
@@ -76,7 +76,7 @@ class TagController extends Controller
     public function show(Tag $tag)
     {
         throw_unless($tag->user_id == $this->user()->id,
-            new ReportError(Lang::get('Usuario no autorizado'), 403));
+            new ReportError(Lang::get('Unauthorized user'), 403));
 
         return $this->showOne($tag, $tag->transformer);
     }
@@ -91,7 +91,7 @@ class TagController extends Controller
     public function update(Request $request, Tag $tag)
     {
         throw_unless($tag->user_id == $this->user()->id,
-            new ReportError(Lang::get('Usuario no autorizado'), 403));
+            new ReportError(Lang::get('Unauthorized user'), 403));
 
         DB::transaction(function () use ($request, $tag) {
 
@@ -116,7 +116,7 @@ class TagController extends Controller
     public function destroy(Tag $tag, Note $note)
     {
         throw_unless($tag->user_id == $this->user()->id,
-            new ReportError(Lang::get('Usuario no autorizado'), 403));
+            new ReportError(Lang::get('Unauthorized user'), 403));
 
         DB::transaction(function () use ($tag, $note) {
 

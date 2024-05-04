@@ -71,7 +71,7 @@ class NoteController extends Controller
     public function show(Note $note)
     {
         throw_unless($note->user_id == $this->user()->id,
-            new ReportError(Lang::get('Usuario no autorizado'), 403));
+            new ReportError(Lang::get('Unauthorized user'), 403));
 
         return $this->showOne($note, $note->transformer);
     }
@@ -86,7 +86,7 @@ class NoteController extends Controller
     public function update(Request $request, Note $note)
     {
         throw_unless($note->user_id == $this->user()->id,
-            new ReportError(Lang::get('Usuario no autorizado'), 403));
+            new ReportError(Lang::get('Unauthorized user'), 403));
 
         $this->validate($request, [
             'title' => ['nullable', 'max:50'],
@@ -139,7 +139,7 @@ class NoteController extends Controller
     public function destroy(Note $note)
     {
         throw_unless($note->user_id == $this->user()->id,
-            new ReportError(Lang::get('Usuario no autorizado'), 403));
+            new ReportError(Lang::get('Unauthorized user'), 403));
 
         $note->delete();
 
