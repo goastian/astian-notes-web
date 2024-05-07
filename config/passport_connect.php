@@ -69,7 +69,7 @@ return [
      */
     'cookie' => [
         'path' => '/',
-        'domain' => config('session.domain') ?: 'localhost',
+        'domain' => env('PASSPORT_DOMAIN_SERVER'),
         'time_expires' => 10,
         'secure' => isset($_SERVER['HTTPS']) ? true : false,
         'http_only' => true,
